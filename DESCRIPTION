@@ -1,0 +1,32 @@
+Package: xtractomatic
+Title: Extracts Environmental Data from ERD's ERDDAP Web Service
+Version: 3.0.9000
+Authors@R: c(
+    person("Roy", "Mendelssohn", email = "roy.mendelssohn@noaa.gov", role = c("aut","cre")),
+    person("Cindy", "Bessey",  role = "ctb"),
+    person("Dave", "Foley", role = "ctb"))
+Description: The xtractomatic package contains three functions that access
+    environmental data from ERD's ERDDAP service. The xtracto function extracts
+    data along a trajectory for a given "radius" around the point. The
+    xtracto_3D function extracts data in a box. The xtractogon function
+    extracts data in a polygon. There are also two helper functions to obtain
+    information about available data.
+URL: https://github.com/rmendels/xtractomatic
+BugReports: https://github.com/rmendels/xtractomatic/issues
+Depends: R (>= 3.1.1)
+License: CC0 + file LICENSE
+LazyData: true
+Imports:  httr,
+          ncdf4,
+          sp
+Suggests:  ggplot2,
+           ggfortify,
+           knitr,
+           lubridate,
+           mapdata,
+           RColorBrewer,
+           reshape2,
+           testthat,
+           xts
+VignetteBuilder: knitr
+Packaged: 2015-01-06 00:27:18 UTC; rmendels

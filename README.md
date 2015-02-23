@@ -33,6 +33,17 @@ install.packages("devtools")
 devtools::install_github("rmendels/xtractomatic")
 ```
 
+The vignette provides a lot of examples of using `xtractomatic`, and it is not built by default by `devtools.
+
+To install and build the Vignette, do:
+
+```{r install,eval=FALSE}
+install.packages("devtools")
+devtools::install_github("rmendels/xtractomatic", build_vignettes = TRUE)
+```
+Note however, that the Vignette generates graphics by doing a large number of downloads using `xtractomatic`, and the build may fail if the server is busy or your internet line is slow.
+If you can not get the Vignette to build, email me a roy.mendelssohn@noaa.gov for a pdf version.
+
 
 # Required legalese
 

@@ -33,7 +33,7 @@ install.packages("devtools")
 devtools::install_github("rmendels/xtractomatic")
 ```
 
-The vignette provides a lot of examples of using `xtractomatic`, and it is not built by default by `devtools.
+The vignette provides a lot of examples of using `xtractomatic`, and it is not built by default by `devtools`.
 
 To install and build the Vignette, do:
 

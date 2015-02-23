@@ -42,7 +42,7 @@ install.packages("devtools")
 devtools::install_github("rmendels/xtractomatic", build_vignettes = TRUE)
 ```
 Note however, that the Vignette generates graphics by doing a large number of downloads using `xtractomatic`, and the build may fail if the server is busy or your internet line is slow.
-If you can not get the Vignette to build, email me a roy.mendelssohn@noaa.gov for a pdf version.
+If you can not get the Vignette to build, email me at roy.mendelssohn@noaa.gov for a pdf version.
 
 
 # Required legalese

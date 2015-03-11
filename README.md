@@ -41,6 +41,24 @@ To install and build the Vignette, do:
 install.packages("devtools")
 devtools::install_github("rmendels/xtractomatic", build_vignettes = TRUE)
 ```
+
+The Vignette requires the following packages:
+
+- `ggplot2`
+- `ggfortify` 
+- `lubridate`
+- `mapdata`
+- `RColorBrewer`
+- `reshape2`
+- `xts`
+
+The package `ggfortify` is not on CRAN at the moment.  To install `ggfortify`:
+
+```{r ggfortify,eval=FALSE}
+devtools::install_github("sinhrks/ggfortify")
+```
+
+
 Note however, that the Vignette generates graphics by doing a large number of downloads using `xtractomatic`, and the build may fail if the server is busy or your internet line is slow.
 If you can not get the Vignette to build, email me at roy.mendelssohn@noaa.gov for a pdf version.
 

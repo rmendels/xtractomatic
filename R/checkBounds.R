@@ -37,7 +37,9 @@ checkBounds<-function(dataStruct,xposLim,yposLim,tposLim){
      returnCode<--1
    }
 # check time
-  if((tposLim[1] < dataStruct$minTime)  || (tposLim[2] > dataStruct$maxTime)) {
+   minTime<-as.Date(dataStruct$minTime,origin='1970-01-01',tz= "GMT")
+   maxTime <-as.Date(dataStruct$maxTime,,origin='1970-01-01',tz= "GMT")
+  if((tposLim[1] < minTime)  || (tposLim[2] > maxTime)) {
      print('tpos  (time) has elements out of range of the dataset')
      print('time range in tpos')
      print(paste0(tposLim[1],',', tposLim[2]))

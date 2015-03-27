@@ -70,7 +70,7 @@ if(dataStruct$datasetname=="etopo360"||dataStruct$datasetname=="etopo180"){
      }
 }
 
-dataStruct<-getMaxTime(dataStruct)
+#dataStruct<-getMaxTime(dataStruct)
 #get dimension info
 dataCoordList<-getfileCoords(dataStruct)
 if(!is.list(dataCoordList)){
@@ -83,7 +83,7 @@ longitude<-dataCoordList[[4]]
 if(dataStruct$hasAlt){
   altitude<-dataCoordList[[5]]
 }
-lenTime=length(isotime)
+lenTime<-length(isotime)
 dataStruct$maxTime <- isotime[lenTime]
 tpos1<-tpos
 if(grepl("last",tpos1[1])){

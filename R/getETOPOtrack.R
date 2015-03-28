@@ -119,7 +119,9 @@ getETOPOtrack<-function(dataStruct,xpos1,ypos,xrad,yrad,verbose,urlbase='http://
           out.dataframe[i,11]<-mad(paramdata,na.rm=T)
           # clean thing up
           # remove temporary file
-          file.remove(fileout,showWarnings = FALSE)
+          if(file.exists(fileout)){
+            file.remove(fileout,showWarnings = FALSE)
+          }
           # remove variable from workspace
           remove('paramdata')
         }else{
@@ -137,7 +139,6 @@ getETOPOtrack<-function(dataStruct,xpos1,ypos,xrad,yrad,verbose,urlbase='http://
   returnList$out.dataframe<-out.dataframe
   returnList$returnCode<-returnCode
 #clean things up
-file.remove(fileout, showWarnings = FALSE)
 
 
   return(returnList)

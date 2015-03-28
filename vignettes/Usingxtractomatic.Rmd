@@ -189,7 +189,7 @@ The <span style="color:blue">median chla</span> is smaller than the <span style=
 
 In addition to satellite data, `xtractomatic` can access topographic data. As an example we extract and plot the water depth (bathymetry) associated with the trackline.
 
-```{r topotag, fig.align='center',fig.width=6,fig.height = 4}
+```{r topotag, fig.align='center',fig.width=6,fig.height = 4, warning = FALSE}
 require("xtractomatic")
 require("ggplot2")
 ylim<-c(15,30)

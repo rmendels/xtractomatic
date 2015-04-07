@@ -43,7 +43,7 @@ install.packages("devtools")
 devtools::install_github("rmendels/xtractomatic", build_vignettes = TRUE)
 ```
 
-The Vignette requires the following packages:
+The Vignette examples require the following packages and will not build if they are not installed:
 
 - `ggplot2`
 - `ggfortify` 

@@ -1,6 +1,6 @@
 Package: xtractomatic
 Title: Extracts Environmental Data from ERD's ERDDAP Web Service
-Version: 3.0.9000
+Version: 3.0.0
 Authors@R: c(
     person("Roy", "Mendelssohn", email = "roy.mendelssohn@noaa.gov", role = c("aut","cre")),
     person("Cindy", "Bessey",  role = "ctb"),

@@ -47,22 +47,20 @@ The `dtype` parameter in the data extraction routines specifies a combination of
 `xtractomatic` uses the `httr`, `ncdf4` and `sp` packages, and these packages must be installed first or `xtractomatic` will fail to install (the Windows version of `ncdf4` is not available through CRAN because of some quirks in CRAN policy, but it can be obtained at <http://cirrus.ucsd.edu/~pierce/ncdf/>).   
 
 ```{r install,eval=FALSE}
-install.packages("httr")
-install.packages("ncdf4") 
-install.packages("sp")
+install.packages("httr", dependencies = TRUE)
+install.packages("ncdf4",dependencies = TRUE) 
+install.packages("sp", dependencies = TRUE)
 ```
 
-The `xtractomatic` package is not available through <span style="color:blue">CRAN</span> at the moment, so it must be installed locally from a ".tar.gz" file.  It is recommended that you install the package in your local <span style="color:blue">R</span> directory, rather than the <span style="color:blue">R</span> System directory.  You can find this directory using:
-
-```{r libPaths,eval=FALSE}
-.libPaths()
-```
+The `xtractomatic` package is not available through <span style="color:blue">CRAN</span> at the moment, but it is available from [Github](https://github.com/rmendels/xtractomatic)
  
-To install the `xtractomatic` package,
+To install the `xtractomatic` package from <span style="color:blue">Github</span> ,
 
-```{r installPack,eval=FALSE}
- install.packages('xtractomatic_3.0.tar.gz',lib='/path-to-your/R/3.1/library',type='source',repos=NULL)
+```{r installGit,eval=FALSE}
+install.packages("devtools")
+devtools::install_github("rmendels/xtractomatic")
 ```
+
 Once installed, to use `xtractomatic` do
 
 ```{r load,eval=FALSE}

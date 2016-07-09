@@ -19,7 +19,7 @@ There also are two information functions in the `xtractomatic` package:
 
 - `getInfo <- function(dtype)`
 
-`xtractomatic` uses the `httr`, `ncdf4` and `sp` packages , and these packages (and the packages imported by these packages) must be installed first or `xtractomatic` will fail to install (the Windows version of `ncdf4` is not available through CRAN because of some quirks in CRAN policy, but it can be obtained at <http://cirrus.ucsd.edu/~pierce/ncdf/>).   
+`xtractomatic` uses the `httr`, `ncdf4` and `sp` packages , and these packages (and the packages imported by these packages) must be installed first or `xtractomatic` will fail to install.   
 
 ```{r install,eval=FALSE}
 install.packages("httr", dependencies = TRUE)

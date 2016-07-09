@@ -7,10 +7,10 @@
 #' @return A vector of longitudes all mapped to (0,360)
 #'
 
-make360 <- function(lon){
+make360 <- function(lon) {
 
-    ind<-which(lon<0)
-    lon[ind]<-lon[ind]+360
+    ind <- which(lon < 0)
+    lon[ind] <- lon[ind] + 360
 
   return(lon)
 }

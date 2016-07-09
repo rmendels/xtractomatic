@@ -12,30 +12,30 @@
 
 
 
-getfileCoords<-function(dataStruct, urlbase='http://coastwatch.pfeg.noaa.gov/erddap/griddap/'){
+getfileCoords <- function(dataStruct, urlbase='http://coastwatch.pfeg.noaa.gov/erddap/griddap/') {
 
   #get dimension info
-  hasAltitude=dataStruct$hasAlt
-  myURL<-paste(urlbase,dataStruct$datasetname,'.csv?time[0:1:last]',sep="")
-  isotime<-read.csv(myURL,skip=2,stringsAsFactors = FALSE,header=FALSE )
-  isotime<-isotime[,1]
-  udtime<-as.Date(isotime,origin='1970-01-01',tz= "GMT")
-  myURL<-paste(urlbase,dataStruct$datasetname,'.csv?latitude[0:1:last]',sep="")
-  latitude<-read.csv(myURL,skip=2,header=FALSE)
-  latitude<-latitude[,1]
-  myURL<-paste(urlbase,dataStruct$datasetname,'.csv?longitude[0:1:last]',sep="")
-  longitude<-read.csv(myURL,skip=2,header=FALSE)
-  longitude<-longitude[,1]
-  if(hasAltitude){
-    myURL<-paste(urlbase,dataStruct$datasetname,'.csv?altitude[0:1:last]',sep="")
-    altitude<-read.csv(myURL,skip=2,header=FALSE)
-    altitude<-altitude[,1]
+  hasAltitude <- dataStruct$hasAlt
+  myURL <- paste(urlbase,dataStruct$datasetname, '.csv?time[0:1:last]', sep="")
+  isotime <- read.csv(myURL, skip=2, stringsAsFactors = FALSE, header=FALSE )
+  isotime <- isotime[, 1]
+  udtime <- as.Date(isotime, origin='1970-01-01', tz= "GMT")
+  myURL <- paste(urlbase, dataStruct$datasetname, '.csv?latitude[0:1:last]', sep="")
+  latitude <- read.csv(myURL, skip=2, header=FALSE)
+  latitude <- latitude[, 1]
+  myURL <- paste(urlbase, dataStruct$datasetname, '.csv?longitude[0:1:last]', sep="")
+  longitude <- read.csv(myURL, skip=2, header=FALSE)
+  longitude <- longitude[, 1]
+  if (hasAltitude) {
+    myURL <- paste(urlbase, dataStruct$datasetname, '.csv?altitude[0:1:last]', sep="")
+    altitude <- read.csv(myURL, skip=2, header=FALSE)
+    altitude <- altitude[, 1]
   }
 
 
-  if(hasAltitude){
-     returnlist = list(isotime,udtime,latitude,longitude,altitude)
+  if (hasAltitude) {
+     returnlist <- list(isotime, udtime, latitude, longitude, altitude)
    } else{
-    returnlist = list(isotime,udtime,latitude,longitude)
+    returnlist <- list(isotime, udtime, latitude, longitude)
    }
 } #function getfileinfo

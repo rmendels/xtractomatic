@@ -10,33 +10,30 @@
 #'  @param urlbase A character string giving the base URL of the ERDDAP server
 #'  @return The ERDDAP URL to call
 
-buildURL<-function(dataStruct,lonBounds,latBounds,timeBounds,urlbase="http://coastwatch.pfeg.noaa.gov/erddap/griddap/"){
-  lon1<-lonBounds[1]
-  lon2<-lonBounds[2]
-  lat1<-latBounds[1]
-  lat2<-latBounds[2]
-  time1=timeBounds[1]
-  time2<-timeBounds[2]
-  hasAltitude<-dataStruct$hasAlt
-  datasetname<-dataStruct$datasetname
-  varname<-dataStruct$varname
+buildURL <- function(dataStruct, lonBounds, latBounds, timeBounds, urlbase="http://coastwatch.pfeg.noaa.gov/erddap/griddap/") {
+  lon1 <- lonBounds[1]
+  lon2 <- lonBounds[2]
+  lat1 <- latBounds[1]
+  lat2 <- latBounds[2]
+  time1 <- timeBounds[1]
+  time2 <- timeBounds[2]
+  hasAltitude <- dataStruct$hasAlt
+  datasetname <- dataStruct$datasetname
+  varname <- dataStruct$varname
 
   # text string for data retrieval call
-  if(hasAltitude){
-    altitude<-dataStruct$minAltitude
-    altitudeBound<-paste('[(',as.character(altitude),'):1:(',as.character(altitude),')]',sep="")
-    myURL=paste(urlbase,datasetname,'.nc?',varname,'[(',time1,'):1:(',time2,')]',
+  if (hasAltitude) {
+    altitude <- dataStruct$minAltitude
+    altitudeBound <- paste('[(', as.character(altitude), '):1:(', as.character(altitude), ')]', sep="")
+    myURL <- paste(urlbase, datasetname, '.nc?', varname, '[(', time1, '):1:(', time2, ')]',
                 altitudeBound,
-                '[(',lat1,'):1:(',lat2,')]',
-                '[(',lon1,'):1:(',lon2,')]',sep="")
-  } else
-  {
-    myURL=paste(urlbase,datasetname,'.nc?',varname,'[(',time1,'):1:(',time2,')]',
-                '[(',lat1,'):1:(',lat2,')]',
-                '[(',lon1,'):1:(',lon2,')]',sep="")
+                '[(', lat1, '):1:(', lat2, ')]',
+                '[(', lon1, '):1:(', lon2, ')]', sep="")
+  } else {
+    myURL <- paste(urlbase, datasetname, '.nc?', varname, '[(', time1, '):1:(', time2, ')]',
+                '[(', lat1, '):1:(', lat2, ')]',
+                '[(', lon1, '):1:(', lon2, ')]', sep="")
   }
-
-
 
   return(myURL)
 

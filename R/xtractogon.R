@@ -21,10 +21,10 @@
 #'   \item extract$time - the times of the extracts
 #'   }
 #' @examples
-#' tpos<-c("2014-09-01","2014-10-01")
-#' xpos<-mbnms$Longitude
-#' ypos<-mbnms$Latitude
-#' sanctchl <- xtractogon(xpos,ypos,tpos,'erdVH2chlamday')
+#' tpos <- c("2014-09-01", "2014-10-01")
+#' xpos <- mbnms$Longitude
+#' ypos <- mbnms$Latitude
+#' sanctchl <- xtractogon(xpos, ypos, tpos, 'erdVH2chlamday')
 #' @section Details:
 #'  xtractogon extracts the data from the smallest bounding box that contains
 #'  the polygon, and then uses the function "point.in.polygon" from the "sp"
@@ -34,43 +34,43 @@
 
 
 
-xtractogon<-function (xpos, ypos, tpos, dtype, verbose=FALSE)
+xtractogon <- function (xpos, ypos, tpos, dtype, verbose=FALSE)
 {
-if(length(xpos)!= length(ypos)){
+if (length(xpos) != length(ypos)) {
   print('xpos and ypos are not of the same length')
   stop('program stops')
 }
 
 #extend out tpos to be length 2 if not
-tpos1<-tpos
-if (length(tpos1) == 1){
-  tpos1<-rep(tpos1,2)
+tpos1 <- tpos
+if (length(tpos1) == 1) {
+  tpos1 <- rep(tpos1, 2)
 }
-poly<- data.frame(xpos,ypos)
-colnames(poly)<-c('x','y')
+poly <- data.frame(xpos, ypos)
+colnames(poly) <- c('x', 'y')
 xpos1 <- c(min(xpos), max(xpos))
-ypos1 <- c(min(ypos),max(ypos))
+ypos1 <- c(min(ypos), max(ypos))
 
 # call xtracto to get data
-	extract <- xtracto_3D(xpos1,ypos1,tpos1,dtype, verbose)
-  if(length(dim(extract$data))==2){
-    extract$data<-array(extract$data,c(dim(extract$data),1))
+	extract <- xtracto_3D(xpos1, ypos1, tpos1, dtype, verbose)
+  if (length(dim(extract$data)) == 2) {
+    extract$data <- array(extract$data, c(dim(extract$data), 1))
   }
 
 # make sure polygon is closed; if not, close it.
-	if ((poly[length(poly[,1]),1] != poly[1,1]) | (poly[length(poly[,2]),2] != poly[1,2])){
-		poly <- rbind(poly, c(poly[1,1], poly[1,2]))
+	if ((poly[length(poly[,1]), 1] !=  poly[1, 1]) | (poly[length(poly[,2]), 2] != poly[1, 2])) {
+		poly <- rbind(poly, c(poly[1,1], poly[1, 2]))
 	}
 
 #Parse grid lats and longs
 #    x.vals <- matrix(rep(as.numeric(substr(dimnames(extract)[[1]], 1, nchar(dimnames(extract)[[1]])-1)),length(dimnames(extract)[[2]])), ncol = length(dimnames(extract)[[2]]))
 #    y.vals <- matrix(sort(rep(as.numeric(substr(dimnames(extract)[[2]], 1, nchar(dimnames(extract)[[2]])-1)),length(dimnames(extract)[[1]]))), ncol = length(dimnames(extract)[[1]]))
-x.vals<-matrix(rep(extract$longitude,length(extract$latitude)),ncol=length(extract$latitude))
-y.vals<-sort(rep(extract$latitude,length(extract$longitude)))
-y.vals<-matrix(y.vals,nrow=length(extract$latitude),ncol=length(extract$longitude))
+x.vals <- matrix(rep(extract$longitude, length(extract$latitude)), ncol=length(extract$latitude))
+y.vals <- sort(rep(extract$latitude, length(extract$longitude)))
+y.vals <- matrix(y.vals, nrow=length(extract$latitude), ncol=length(extract$longitude))
 # deal with polygon crossing 180
 ew.sign <- sign(poly$x)
-if(length(unique(ew.sign)) > 1){
+if (length(unique(ew.sign)) > 1) {
   poly$x[poly$x < 0] <- poly$x[poly$x < 0] + 360
   x.vals[x.vals < 0] <- x.vals[x.vals < 0] + 360
   print("Polygon data cross 180. Converted to E longitudes")
@@ -81,10 +81,10 @@ if(length(unique(ew.sign)) > 1){
 in.poly <- matrix(sp::point.in.polygon(x.vals, y.vals, poly$x, poly$y), ncol = length(extract$longitude))
 in.poly[in.poly > 1] <- 1
 in.poly[in.poly == 0] <- NA
-dim(in.poly) <- dim(extract$data[,,1])
+dim(in.poly) <- dim(extract$data[, , 1])
 extract.in.poly <- apply(extract$data, 3, "*", in.poly)
 dim(extract.in.poly) <- dim(extract$data)
-extract$data<-extract.in.poly
+extract$data <- extract.in.poly
 
 return(extract)
 }

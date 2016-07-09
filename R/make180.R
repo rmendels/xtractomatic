@@ -9,9 +9,9 @@
 
 
 
-make180 <- function(lon){
+make180 <- function(lon) {
 
-    ind<-which(lon>180)
-    lon[ind]<-lon[ind]-360
+    ind <- which(lon > 180)
+    lon[ind] <- lon[ind] - 360
    return(lon)
 }

@@ -9,36 +9,36 @@
 #'
 
 
-getErddapURL<-function(myURL,destfile,verbose=FALSE){
-  numtries<-10
-  tryn<-1
-  requestStatus<-0
-  while (tryn<numtries & requestStatus!=200){
-     if(verbose){
-       myHTTP<-httr::GET(myURL,httr::verbose(),httr::progress(),httr::write_disk(destfile,overwrite = TRUE))
-     }else{
-       myHTTP<-httr::GET(myURL,httr::write_disk(destfile,overwrite = TRUE))
+getErddapURL <- function(myURL, destfile, verbose=FALSE) {
+  numtries <- 10
+  tryn <- 1
+  requestStatus <- 0
+  while (tryn < numtries & requestStatus != 200) {
+     if (verbose) {
+       myHTTP <- httr::GET(myURL, httr::verbose(), httr::progress(), httr::write_disk(destfile, overwrite = TRUE))
+     } else {
+       myHTTP <- httr::GET(myURL, httr::write_disk(destfile, overwrite = TRUE))
      }
-     requestStatus<- httr::status_code(myHTTP)
-     if(requestStatus == 200){
+     requestStatus <- httr::status_code(myHTTP)
+     if (requestStatus == 200) {
 #        binContent <- httr::content(myHTTP, "raw")
 #        writeBin(binContent, destfile)
-         downloadReturn<-0
+         downloadReturn <- 0
          break
-     }else if((requestStatus == 500) | (requestStatus == 404)){
+     } else if ((requestStatus == 500) | (requestStatus == 404)) {
         print(paste0("Error trying to retrive file, status", requestStatus))
         print("Header Info of URL Request")
         httr::headers(myHTTP)
-        downloadReturn<--1
+        downloadReturn <- -1
         break
-     }else{
+     } else {
        print(paste0("Download Attempt: ", tryn))
        print(paste0("Error trying to retrive file, status", requestStatus))
        print("Header Info of URL Request")
        httr::headers(myHTTP)
        print("Will pause and try again")
        Sys.sleep(5)
-       tryn<-tryn+1
+       tryn <- tryn + 1
      }
 
    }  #while

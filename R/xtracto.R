@@ -36,7 +36,6 @@
 #' extract<-xtracto(xpos, ypos,tpos, 20, xlen, ylen)
 #' extract<-xtracto(xpos, ypos,tpos, 20, xlen, ylen,verbose=TRUE)
 #' extract<-xtracto(xpos, ypos, tpos,'phssta8day', xlen, ylen)
-#' @section History
 #'
 
 

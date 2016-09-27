@@ -45,7 +45,7 @@ xtracto_3D <- function(xpos, ypos, tpos, dtype, verbose=FALSE) {
       print('dataset name: ', dtype)
       stop('no matching dataset found')
     }
-    dataStruct <- subset(erddapStruct, dtypename == dtype)
+    dataStruct <- subset(erddapStruct, erddapStruct$dtypename == dtype)
   } else {
     if ((dtype < 1) | (dtype > structLength)) {
       print('dataset number out of range - must be between 1 and 107: ', dtype)

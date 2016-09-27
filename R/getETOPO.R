@@ -1,15 +1,15 @@
 #' retrieve ETOPO Bathymetry Data in a Bounding Box
 #'
-#'  @keywords internal
+#' @keywords internal
 #'  \code{getETOPO} is an internal Function retrieve ETOPO Bathymetry Data in a
 #'       Bounding Box given by xpos, ypos
 #'
-#'  @param dataStruct A structure describing the dataset from erddapStruct.rda
-#'  @param xpos1 A list of reals size 2 of the longitude bounds
-#'  @param ypos A list of reals size 2 of the latitude bounds
-#'  @param verbose Logical variable if true will produce verbose
+#'  @param dataStruct - A structure describing the dataset from erddapStruct.rda
+#'  @param xpos1 - A list of reals size 2 of the longitude bounds
+#'  @param ypos - A list of reals size 2 of the latitude bounds
+#'  @param verbose - Logical variable if true will produce verbose
 #'     output from httr:GET
-#'  @param urlbase A character string giving the base URL of the ERDDAP server
+#'  @param urlbase - A character string giving the base URL of the ERDDAP server
 #'  @return Named Data array with data, or else NaN
 
 getETOPO <- function(dataStruct, xpos1, ypos, verbose, urlbase='http://coastwatch.pfeg.noaa.gov/erddap/griddap/') {
@@ -42,10 +42,10 @@ if ((ylim1 < -90) | (ylim2 > 90)) {
 }
 if (returnCode == 0) {
   myURL <- paste(urlbase, dataStruct$datasetname, '.csv?latitude[0:1:last]', sep="")
-  latitude <- read.csv(myURL, skip=2, header=FALSE)
+  latitude <- utils::read.csv(myURL, skip=2, header=FALSE)
   latitude <- latitude[, 1]
   myURL <- paste(urlbase, dataStruct$datasetname, '.csv?longitude[0:1:last]', sep="")
-  longitude <- read.csv(myURL, skip=2, header=FALSE)
+  longitude <- utils::read.csv(myURL, skip=2, header=FALSE)
   longitude <- longitude[, 1]
   lat1 <- latitude[which.min(abs(latitude - ylim1))]
   lat2 <- latitude[which.min(abs(latitude - ylim2))]

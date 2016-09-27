@@ -4,22 +4,22 @@
 #'  \code{getETOPOtrack}  is an internal Function retrieve ETOPO Bathymetry Data
 #'   in a Bounding Box given by xpos, ypos
 #'
-#'  @param dataStruct A structure describing the dataset from erddapStruct.rda
-#'  @param xpos1 A list of reals of the track longitudes
-#'  @param ypos A list of reals of the track latitude bounds
-#'  @param xrad A list of reals with distance around given longitude
+#'  @param dataStruct - A structure describing the dataset from erddapStruct.rda
+#'  @param xpos - A list of reals of the track longitudes
+#'  @param ypos - A list of reals of the track latitude bounds
+#'  @param xrad - A list of reals with distance around given longitude
 #'    to make extract
-#'  @param yrad A list of reals with distance around given latitude
+#'  @param yrad - A list of reals with distance around given latitude
 #'    to make extract
-#'  @param verbose Logical variable if true will produce verbose
+#'  @param verbose - Logical variable if true will produce verbose
 #'     output from httr:GET
-#'  @param urlbase A character string giving the base URL of the ERDDAP server
+#'  @param urlbase - A character string giving the base URL of the ERDDAP server
 #'  @return Named Data array with data, or else NaN
 
-getETOPOtrack <- function(dataStruct, xpos1, ypos, xrad, yrad, verbose, urlbase='http://coastwatch.pfeg.noaa.gov/erddap/griddap/'){
+getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='http://coastwatch.pfeg.noaa.gov/erddap/griddap/'){
   returnCode <- 0
-  xlim1 <- min(xpos1)
-  xlim2 <- max(xpos1)
+  xlim1 <- min(xpos)
+  xlim2 <- max(xpos)
   ylim1 <- min(ypos)
   ylim2 <- max(ypos)
   out.dataframe <- as.data.frame(matrix(ncol=11, nrow=length(xpos)))
@@ -56,10 +56,10 @@ getETOPOtrack <- function(dataStruct, xpos1, ypos, xrad, yrad, verbose, urlbase=
 
   if (returnCode == 0) {
     myURL<-paste(urlbase, dataStruct$datasetname, '.csv?latitude[0:1:last]', sep="")
-    latitude <- read.csv(myURL, skip=2, header=FALSE)
+    latitude <- utils::read.csv(myURL, skip=2, header=FALSE)
     latitude <- latitude[, 1]
     myURL <- paste(urlbase, dataStruct$datasetname, '.csv?longitude[0:1:last]', sep="")
-    longitude <- read.csv(myURL, skip=2, header=FALSE)
+    longitude <- utils::read.csv(myURL, skip=2, header=FALSE)
     longitude <- longitude[, 1]
     for (i in 1:length(xpos)) {
       # define bounding box
@@ -102,16 +102,16 @@ getETOPOtrack <- function(dataStruct, xpos1, ypos, xrad, yrad, verbose, urlbase=
           paramdata <- as.vector(ncdf4::ncvar_get(datafileID))
           ncdf4::nc_close(datafileID)
           out.dataframe[i, 1] <- mean(paramdata, na.rm=T)
-          out.dataframe[i, 2] <- sd(paramdata, na.rm=T)
-          out.dataframe[i, 3] <- length(na.omit(paramdata))
+          out.dataframe[i, 2] <- stats::sd(paramdata, na.rm=T)
+          out.dataframe[i, 3] <- length(stats::na.omit(paramdata))
           out.dataframe[i, 4] <- NaN
           out.dataframe[i, 5] <- xmin
           out.dataframe[i, 6] <- xmax
           out.dataframe[i, 7] <- ymin
           out.dataframe[i, 8] <- ymax
           out.dataframe[i, 9] <- NaN
-          out.dataframe[i, 10] <- median(paramdata, na.rm=T)
-          out.dataframe[i, 11] <- mad(paramdata, na.rm=T)
+          out.dataframe[i, 10] <- stats::median(paramdata, na.rm=T)
+          out.dataframe[i, 11] <- stats::mad(paramdata, na.rm=T)
           # clean thing up
           # remove temporary file
            if (file.exists(fileout)) {

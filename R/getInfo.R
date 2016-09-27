@@ -57,7 +57,7 @@ structLength <- nrow(erddapStruct)
    }
 
    if (is.character(dtype)) {
-     dataStruct <- subset(erddapStruct, dtypename==dtype)
+     dataStruct <- subset(erddapStruct, erddapStruct$dtypename==dtype)
    }else{
      dataStruct <- erddapStruct[dtype, 1:19]
    }

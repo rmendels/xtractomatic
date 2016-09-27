@@ -1,14 +1,14 @@
 #' Build an ERDDAP URL
 #'
-#'  @keywords internal
-#'  \code{buildURL}  is an internal function that builds the ERDDAP URL from the information provided
+#' @keywords internal
+#' \code{buildURL}  is an internal function that builds the ERDDAP URL from the information provided
 #'
-#'  @param dataStruct A structure describing the dataset from erddapStruct.rda
-#'  @param lonBounds A list or reals size two of the longitude bounds
-#'  @param latbounds A list of reals size 2 of the latitude bounds
-#'  @param timeBounds A list of strings size two of the time bounds
-#'  @param urlbase A character string giving the base URL of the ERDDAP server
-#'  @return The ERDDAP URL to call
+#' @param dataStruct A structure describing the dataset from erddapStruct.rda
+#' @param lonBounds A list or reals size two of the longitude bounds
+#' @param latBounds A list of reals size 2 of the latitude bounds
+#' @param timeBounds A list of strings size two of the time bounds
+#' @param urlbase A character string giving the base URL of the ERDDAP server
+#' @return The ERDDAP URL to call
 
 buildURL <- function(dataStruct, lonBounds, latBounds, timeBounds, urlbase="http://coastwatch.pfeg.noaa.gov/erddap/griddap/") {
   lon1 <- lonBounds[1]

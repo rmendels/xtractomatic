@@ -64,7 +64,7 @@ xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose=FALSE){
       print(paste0('dataset name: ', dtype))
       stop('no matching dataset found')
     }
-    dataStruct <- subset(erddapStruct, dtypename == dtype)
+    dataStruct <- subset(erddapStruct, erddapStruct$dtypename == dtype)
   } else {
     if ((dtype < 1) | (dtype > structLength)){
       print(paste0('dataset number out of range - must be between 1 and', structLength, dtype))
@@ -206,16 +206,16 @@ for (i in 1:length(xpos1)) {
     }
 
      out.dataframe[i, 1] <- mean(paramdata, na.rm=T)
-     out.dataframe[i, 2] <- sd(paramdata, na.rm=T)
-     out.dataframe[i, 3] <- length(na.omit(paramdata))
+     out.dataframe[i, 2] <- stats::sd(paramdata, na.rm=T)
+     out.dataframe[i, 3] <- length(stats::na.omit(paramdata))
      out.dataframe[i, 4] <- requesttime
      out.dataframe[i, 5] <- xmin
      out.dataframe[i, 6] <- xmax
      out.dataframe[i, 7] <- ymin
      out.dataframe[i, 8] <- ymax
      out.dataframe[i, 9] <- tpos[i]
-     out.dataframe[i, 10] <- median(paramdata, na.rm=T)
-     out.dataframe[i, 11] <- mad(paramdata, na.rm=T)
+     out.dataframe[i, 10] <- stats::median(paramdata, na.rm=T)
+     out.dataframe[i, 11] <- stats::mad(paramdata, na.rm=T)
 
      # clean thing up
      # remove temporary file

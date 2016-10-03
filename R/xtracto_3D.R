@@ -26,8 +26,10 @@
 #' ypos <- c(40, 45)
 #' tpos <- c('2006-05-05', '2006-06-21')
 #' extract <- xtracto_3D(xpos, ypos, tpos, 20)
+#' \donttest{
 #' extract <- xtracto_3D(xpos, ypos, tpos, 20, verbose=TRUE)
 #' extract <- xtracto_3D(xpos, ypos, tpos, 'phssta8day')
+#' }
 
 xtracto_3D <- function(xpos, ypos, tpos, dtype, verbose=FALSE) {
 

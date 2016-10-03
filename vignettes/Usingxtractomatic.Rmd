@@ -52,9 +52,14 @@ install.packages("ncdf4",dependencies = TRUE)
 install.packages("sp", dependencies = TRUE)
 ```
 
-The `xtractomatic` package is not available through <span style="color:blue">CRAN</span> at the moment, but it is available from [Github](https://github.com/rmendels/xtractomatic)
- 
-To install the `xtractomatic` package from <span style="color:blue">Github</span> ,
+The `xtractomatic` package is available from <span style="color:blue">CRAN</span> and can be installed by:
+
+```{r installCRAN,eval=FALSE}
+install.packages("xtractomatic")
+```
+
+
+or the development version is available from [Github](https://github.com/rmendels/xtractomatic and can be installed from <span style="color:blue">Github</span>,
 
 ```{r installGit,eval=FALSE}
 install.packages("devtools")

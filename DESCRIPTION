@@ -6,7 +6,7 @@ Authors@R: c(
     person("Cindy", "Bessey",  role = "ctb"),
     person("Dave", "Foley", role = "ctb"))
 Description: The xtractomatic package contains three functions that access
-    environmental data from ERD's ERDDAP service. The xtracto function extracts
+    environmental data from ERD's ERDDAP service <http://coastwatch.pfeg.noaa.gov/erddap>. The xtracto function extracts
     data along a trajectory for a given "radius" around the point. The
     xtracto_3D function extracts data in a box. The xtractogon function
     extracts data in a polygon. There are also two helper functions to obtain

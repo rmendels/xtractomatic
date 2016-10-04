@@ -228,7 +228,7 @@ for (i in 1:length(xpos1)) {
    }
    oldLatIndex <- newLatIndex
    oldLonIndex <- newLonIndex
-   oldTimeIndex < -newTimeIndex
+   oldTimeIndex <- newTimeIndex
    oldDataFrame <- out.dataframe[i,]
 
 }

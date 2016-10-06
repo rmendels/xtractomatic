@@ -27,9 +27,16 @@ install.packages("ncdf4")
 install.packages("sp")
 ```
 
-The `xtractomatic` package at the moment can be installed from Github using the devtools package:
+The `xtractomatic` package is available from <span style="color:blue">CRAN</span> and can be installed by:
 
-```{r install,eval=FALSE}
+```{r installCRAN,eval=FALSE}
+install.packages("xtractomatic")
+```
+
+
+or the development version is available from [Github](https://github.com/rmendels/xtractomatic and can be installed from <span style="color:blue">Github</span>,
+
+```{r installGit,eval=FALSE}
 install.packages("devtools")
 devtools::install_github("rmendels/xtractomatic")
 ```

@@ -34,7 +34,7 @@ install.packages("xtractomatic")
 ```
 
 
-or the development version is available from [Github](https://github.com/rmendels/xtractomatic and can be installed from <span style="color:blue">Github</span>,
+or the development version is available from [Github](https://github.com/rmendels/xtractomatic) and can be installed from <span style="color:blue">Github</span>,
 
 ```{r installGit,eval=FALSE}
 install.packages("devtools")

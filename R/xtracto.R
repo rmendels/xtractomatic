@@ -28,46 +28,46 @@
 #'  \item column 11 = median absolute deviation of data within search radius
 #'  }
 #' @examples
-#' xpos <- c(230,235)
-#' ypos <- c(40,45)
-#' tpos <- c('2006-01-15','2006-01-20')
-#' xlen<-0.5
-#' ylen<-0.5
-#' extract<-xtracto(xpos, ypos,tpos, 20, xlen, ylen)
+#' xpos <- c(230, 235)
+#' ypos <- c(40, 45)
+#' tpos <- c('2006-01-15', '2006-01-20')
+#' xlen <- 0.5
+#' ylen < -0.5
+#' extract <- xtracto(xpos, ypos, tpos, 20, xlen, ylen)
 #' \donttest{
-#' extract<-xtracto(xpos, ypos,tpos, 20, xlen, ylen,verbose=TRUE)
-#' extract<-xtracto(xpos, ypos, tpos,'phssta8day', xlen, ylen)
+#' extract <- xtracto(xpos, ypos,tpos, 20, xlen, ylen, verbose = TRUE)
+#' extract <- xtracto(xpos, ypos, tpos, 'phssta8day', xlen, ylen)
 #' }
 #'
 
 
 
 
-xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose=FALSE){
+xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose = FALSE){
   # default URL for NMFS/SWFSC/ERD  ERDDAP server
-  urlbase <- 'http://coastwatch.pfeg.noaa.gov/erddap/griddap/'
-  urlbase1 <- 'http://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?'
+  urlbase <- 'https://coastwatch.pfeg.noaa.gov/erddap/griddap/'
+  urlbase1 <- 'https://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?'
   structLength <- nrow(erddapStruct)
   lengthXpos <- length(xpos)
   lengthYpos <- length(ypos)
   lengthTpos <- length(tpos)
   lengthtest <- identical(lengthXpos, lengthYpos) & identical(lengthXpos, lengthTpos)
-  if (!lengthtest){
+  if (!lengthtest) {
     print('input vectors are not of the same length')
     print(paste0('length of xpos: ', lengthXpos))
     print(paste0('length of ypos: ', lengthYpos))
     print(paste0('length of tpos: ', lengthTpos))
     return()
   }
-  if (is.character(dtype)){
+  if (is.character(dtype)) {
     dtypePresent <- dtype %in% erddapStruct$dtypename
-    if (!dtypePresent){
+    if (!dtypePresent) {
       print(paste0('dataset name: ', dtype))
       stop('no matching dataset found')
     }
     dataStruct <- subset(erddapStruct, erddapStruct$dtypename == dtype)
   } else {
-    if ((dtype < 1) | (dtype > structLength)){
+    if ((dtype < 1) | (dtype > structLength)) {
       print(paste0('dataset number out of range - must be between 1 and', structLength, dtype))
       stop('no matching dataset found')
     }
@@ -93,16 +93,16 @@ xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose=FALSE){
 
   # Bathymetry is a special case lets get it out of the way
   if (dataStruct$datasetname == "etopo360" || dataStruct$datasetname == "etopo180") {
-    result <- getETOPOtrack(dataStruct,xpos1,ypos,xrad,yrad,verbose)
-    if (result$returnCode == -1){
-      stop ('error in getting ETOPO data - see error messages')
+    result <- getETOPOtrack(dataStruct, xpos1, ypos, xrad, yrad, verbose)
+    if (result$returnCode == -1) {
+      stop('error in getting ETOPO data - see error messages')
     } else {
       return(result$out.dataframe)
     }
   }
 dataStruct <- getMaxTime(dataStruct)
 
-udtpos <- as.Date(tpos,origin='1970-01-01',tz= "GMT")
+udtpos <- as.Date(tpos, origin = '1970-01-01', tz = "GMT")
 xposLim <- c(min(xpos1 - (xrad/2)), max(xpos1 + (xrad/2)))
 yposLim <- c(min(ypos - (yrad/2)), max(ypos + (yrad/2)))
 tposLim <- c(min(udtpos), max(udtpos))
@@ -129,7 +129,7 @@ if (dataStruct$hasAlt) {
 }
 
 #create structures to store last request in case it is the same
-out.dataframe <- as.data.frame(matrix(ncol = 11,nrow = length(xpos)))
+out.dataframe <- as.data.frame(matrix(ncol = 11, nrow = length(xpos)))
 dimnames(out.dataframe)[[2]] <- c('mean', 'stdev', 'n', 'satellite date', 'requested lon min', 'requested lon max', 'requested lat min', 'requested lat max', 'requested date', 'median', 'mad')
 oldLonIndex <-  rep(NA_integer_, 2)
 oldLatIndex <-  rep(NA_integer_, 2)
@@ -206,8 +206,8 @@ for (i in 1:length(xpos1)) {
       xmax <- make180(xmax)
     }
 
-     out.dataframe[i, 1] <- mean(paramdata, na.rm=T)
-     out.dataframe[i, 2] <- stats::sd(paramdata, na.rm=T)
+     out.dataframe[i, 1] <- mean(paramdata, na.rm = T)
+     out.dataframe[i, 2] <- stats::sd(paramdata, na.rm = T)
      out.dataframe[i, 3] <- length(stats::na.omit(paramdata))
      out.dataframe[i, 4] <- requesttime
      out.dataframe[i, 5] <- xmin
@@ -215,8 +215,8 @@ for (i in 1:length(xpos1)) {
      out.dataframe[i, 7] <- ymin
      out.dataframe[i, 8] <- ymax
      out.dataframe[i, 9] <- tpos[i]
-     out.dataframe[i, 10] <- stats::median(paramdata, na.rm=T)
-     out.dataframe[i, 11] <- stats::mad(paramdata, na.rm=T)
+     out.dataframe[i, 10] <- stats::median(paramdata, na.rm = T)
+     out.dataframe[i, 11] <- stats::mad(paramdata, na.rm = T)
 
      # clean thing up
      # remove temporary file

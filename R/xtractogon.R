@@ -34,8 +34,7 @@
 
 
 
-xtractogon <- function (xpos, ypos, tpos, dtype, verbose=FALSE)
-{
+xtractogon <- function(xpos, ypos, tpos, dtype, verbose = FALSE) {
 if (length(xpos) != length(ypos)) {
   print('xpos and ypos are not of the same length')
   stop('program stops')
@@ -65,9 +64,9 @@ ypos1 <- c(min(ypos), max(ypos))
 #Parse grid lats and longs
 #    x.vals <- matrix(rep(as.numeric(substr(dimnames(extract)[[1]], 1, nchar(dimnames(extract)[[1]])-1)),length(dimnames(extract)[[2]])), ncol = length(dimnames(extract)[[2]]))
 #    y.vals <- matrix(sort(rep(as.numeric(substr(dimnames(extract)[[2]], 1, nchar(dimnames(extract)[[2]])-1)),length(dimnames(extract)[[1]]))), ncol = length(dimnames(extract)[[1]]))
-x.vals <- matrix(rep(extract$longitude, length(extract$latitude)), ncol=length(extract$latitude))
+x.vals <- matrix(rep(extract$longitude, length(extract$latitude)), ncol = length(extract$latitude))
 y.vals <- sort(rep(extract$latitude, length(extract$longitude)))
-y.vals <- matrix(y.vals, nrow=length(extract$latitude), ncol=length(extract$longitude))
+y.vals <- matrix(y.vals, nrow = length(extract$latitude), ncol = length(extract$longitude))
 # deal with polygon crossing 180
 ew.sign <- sign(poly$x)
 if (length(unique(ew.sign)) > 1) {

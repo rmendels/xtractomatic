@@ -10,7 +10,7 @@
 #' @param urlbase A character string giving the base URL of the ERDDAP server
 #' @return The ERDDAP URL to call
 
-buildURL <- function(dataStruct, lonBounds, latBounds, timeBounds, urlbase="http://coastwatch.pfeg.noaa.gov/erddap/griddap/") {
+buildURL <- function(dataStruct, lonBounds, latBounds, timeBounds, urlbase="https://coastwatch.pfeg.noaa.gov/erddap/griddap/") {
   lon1 <- lonBounds[1]
   lon2 <- lonBounds[2]
   lat1 <- latBounds[1]

@@ -5,7 +5,7 @@
 \title{Extract dataset information for a given dtype name or number}
 \usage{
 getMaxTime(dataStruct,
-  urlbase1 = "http://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?")
+  urlbase1 = "https://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?")
 }
 \description{
 Extract dataset information for a given dtype name or number

@@ -45,15 +45,15 @@ A dataframe containing:
 data along a longitude, latitude and time trajectory
 }
 \examples{
-xpos <- c(230,235)
-ypos <- c(40,45)
-tpos <- c('2006-01-15','2006-01-20')
-xlen<-0.5
-ylen<-0.5
-extract<-xtracto(xpos, ypos,tpos, 20, xlen, ylen)
+xpos <- c(230, 235)
+ypos <- c(40, 45)
+tpos <- c('2006-01-15', '2006-01-20')
+xlen <- 0.5
+ylen < -0.5
+extract <- xtracto(xpos, ypos, tpos, 20, xlen, ylen)
 \donttest{
-extract<-xtracto(xpos, ypos,tpos, 20, xlen, ylen,verbose=TRUE)
-extract<-xtracto(xpos, ypos, tpos,'phssta8day', xlen, ylen)
+extract <- xtracto(xpos, ypos,tpos, 20, xlen, ylen, verbose = TRUE)
+extract <- xtracto(xpos, ypos, tpos, 'phssta8day', xlen, ylen)
 }
 
 }

@@ -5,7 +5,7 @@
 \title{retrieve ETOPO Bathymetry Data in a Bounding Box}
 \usage{
 getETOPO(dataStruct, xpos1, ypos, verbose,
-  urlbase = "http://coastwatch.pfeg.noaa.gov/erddap/griddap/")
+  urlbase = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/")
 }
 \description{
 retrieve ETOPO Bathymetry Data in a Bounding Box

@@ -5,7 +5,7 @@
 \title{Get Cooordinate  (Dimension) Data from ERDDAP Dataset}
 \usage{
 getfileCoords(dataStruct,
-  urlbase = "http://coastwatch.pfeg.noaa.gov/erddap/griddap/")
+  urlbase = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/")
 }
 \arguments{
 \item{dataStruct}{A structure describing the dataset from erddapStruct.rda}

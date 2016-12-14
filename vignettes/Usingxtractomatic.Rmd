@@ -124,9 +124,9 @@ require(xtractomatic)
 # called tagData  so that subsequent code will be more generic.  
 
 tagData <- Marlintag38606
-xpos<-tagData$lon
-ypos<-tagData$lat
-tpos<-tagData$date
+xpos <- tagData$lon
+ypos <- tagData$lat
+tpos <- tagData$date
 swchl <- xtracto(xpos, ypos, tpos, "swchla8day", xlen=.2, ylen=.2)
 ```
 
@@ -152,38 +152,38 @@ require(mapdata)
 alldata <- cbind(tagData, swchl)
 
 # adjust the longitudes to be (-180,180)
-alldata$lon<-alldata$lon-360
+alldata$lon <- alldata$lon - 360
 # Create a variable that shows if chla is missing
-alldata$missing<-is.na(alldata$mean)*1
+alldata$missing <- is.na(alldata$mean) * 1
 # set limits of the map
-ylim<-c(15,30)
-xlim<-c(-160,-105)
+ylim <- c(15, 30)
+xlim <- c(-160, -105)
 # get outline data for map
 w <- map_data("worldHires", ylim = ylim, xlim = xlim)
 # plot using ggplot
-z<-ggplot(alldata,aes(x=lon,y=lat)) + 
-   geom_point(aes(colour=mean,shape=factor(missing)),size=2.) + 
-  scale_shape_manual(values=c(19,1))
-z + geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") + 
+z <- ggplot(alldata, aes(x = lon, y = lat)) + 
+   geom_point(aes(colour = mean,shape = factor(missing)), size = 2.) + 
+  scale_shape_manual(values = c(19, 1))
+z + geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") + 
   theme_bw() + 
-  scale_colour_gradient(limits=c(0.,0.32),"Chla") + 
-  coord_fixed(1.3,xlim = xlim, ylim = ylim) + ggtitle("Mean chla values at marlin tag locations")
+  scale_colour_gradient(limits = c(0., 0.32), "Chla") + 
+  coord_fixed(1.3, xlim = xlim, ylim = ylim) + ggtitle("Mean chla values at marlin tag locations")
 ```
 
 ### Comparing with the median
 
 The `xtracto` routine extracts the environment data in a box (defined by `xlen` and `ylen`) around the given location, and calculates statistics of the data in that box. The <span style="color:blue">median chla</span> concentration may make more sense in this situation
 
-```{r mediantrackPlot, fig.align='center',fig.width=6,fig.height = 4}
+```{r mediantrackPlot, fig.align= 'center', fig.width = 6,fig.height = 4}
 require(ggplot2)
 # plot using ggplot
-z<-ggplot(alldata,aes(x=lon,y=lat)) + 
-   geom_point(aes(colour=median,shape=factor(missing)),size=2.) + 
-  scale_shape_manual(values=c(19,1))
-z + geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") + 
+z <- ggplot(alldata,aes(x = lon,y = lat)) + 
+   geom_point(aes(colour = median,shape = factor(missing)), size = 2.) + 
+  scale_shape_manual(values = c(19, 1))
+z + geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") + 
   theme_bw() + 
-  scale_colour_gradient(limits=c(0.,0.32),"Chla") + 
-  coord_fixed(1.3,xlim = xlim, ylim = ylim) + ggtitle(" Median chla values at marlin tag locations")
+  scale_colour_gradient(limits = c(0., 0.32), "Chla") + 
+  coord_fixed(1.3, xlim = xlim, ylim = ylim) + ggtitle(" Median chla values at marlin tag locations")
 ```
 
 The <span style="color:blue">median chla</span> is smaller than the <span style="color:blue">mean chla</span> (a maximum of  0.273 compared to 0.323).
@@ -192,21 +192,21 @@ The <span style="color:blue">median chla</span> is smaller than the <span style=
 
 In addition to satellite data, `xtractomatic` can access topographic data. As an example we extract and plot the water depth (bathymetry) associated with the trackline.
 
-```{r topotag, fig.align='center',fig.width=6,fig.height = 4, warning = FALSE}
+```{r topotag, fig.align = 'center', fig.width = 6, fig.height = 4, warning = FALSE}
 require("xtractomatic")
 require("ggplot2")
-ylim<-c(15,30)
-xlim<-c(-160,-105)
-topo <- xtracto(tagData$lon,tagData$lat,tagData$date,"ETOPO360",.1,.1)
+ylim <- c(15, 30)
+xlim <- c(-160, -105)
+topo <- xtracto(tagData$lon, tagData$lat, tagData$date, "ETOPO360", .1, .1)
 alldata <- cbind(tagData, topo)
-alldata$lon<-alldata$lon-360
-z<-ggplot(alldata,aes(x=lon,y=lat)) + 
-   geom_point(aes(colour=mean),size=2.) + 
-  scale_shape_manual(values=c(19,1))
-z + geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") + 
+alldata$lon <- alldata$lon - 360
+z <- ggplot(alldata, aes(x = lon,y = lat)) + 
+   geom_point(aes(colour = mean), size = 2.) + 
+  scale_shape_manual(values = c(19, 1))
+z + geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") + 
   theme_bw() + 
   scale_colour_gradient("Depth") + 
-  coord_fixed(1.3,xlim = xlim, ylim = ylim) + ggtitle("Bathymetry at marlin tag locations")
+  coord_fixed(1.3, xlim = xlim, ylim = ylim) + ggtitle("Bathymetry at marlin tag locations")
 
 ```
 
@@ -215,7 +215,7 @@ z + geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80")
 
 The above example uses data already converted to <span style="color:blue">R</span> format, but clearly the utility of the `xtracto` function lies in using it with one's own dataset.  This dataset was read in from a text file called <span style="color:blue">Marlin-tag38606.txt</span>, which is also made available when the `xtractomatic` package is loaded.  To be able to refer to this file: 
 
-```{r marlinTxt,results = "hide"}
+```{r marlinTxt, results = "hide"}
 
 system.file("extdata", "Marlin-tag38606.txt", package = "xtractomatic")
 
@@ -224,7 +224,7 @@ system.file("extdata", "Marlin-tag38606.txt", package = "xtractomatic")
 The first 5 lines of the file can be viewed: 
 ```{r}
 datafile <- system.file("extdata", "Marlin-tag38606.txt", package = "xtractomatic")
-system(paste("head -n5 ",datafile))
+system(paste("head -n5 ", datafile))
 
 ```
 
@@ -232,7 +232,7 @@ and read in as follows:
 
 ```{r}
 
-Marlingtag38606 <- read.csv(datafile, head=TRUE, stringsAsFactors = FALSE,sep="\t")
+Marlingtag38606 <- read.csv(datafile, head = TRUE, stringsAsFactors = FALSE, sep = "\t")
 str(Marlingtag38606)
 ```
 
@@ -240,7 +240,7 @@ The file Marlingtag38606.txt is a "tab" separated file, not a comma seperated fi
 
 To be useful the date field, now formatted for example as `4/23/2003`, needs to be converted to an  <span style="color:blue">R</span> date field:
 
-```{r,eval=FALSE}
+```{r, eval = FALSE}
 Marlintag38606$date <- as.Date(Marlintag38606$date, format='%m/%d/%Y')
 ```
 
@@ -248,17 +248,17 @@ The format of the date has to be given because the dates in the file are not in 
 
 This dataset includes the range of the 95% confidence interval for both the latitude and the longitude, which are the last four columns of data.  In the example above the search "radius" was read into xtracto was a constant value of 0.2 degrees, but a vector can also be read in.  To use the limits given in the file, create the vectors as follows:
 
-```{r,eval=FALSE}
+```{r, eval = FALSE}
 xrad <- abs(Marlintag38606$higLon - Marlintag38606$lowLon)
 yrad <- abs(Marlintag38606$higLat - Marlintag38606$lowLat)
 ```
 
 and then use these for the `xlen` and `ylen` inputs in `xtracto`: 
 
-```{r,eval=FALSE}
-xpos<-Marlintag38606$lon 
-ypos<-Marlintag38606$lat 
-tpos<-Marlintag38606$date
+```{r, eval = FALSE}
+xpos <- Marlintag38606$lon 
+ypos <- Marlintag38606$lat 
+tpos <- Marlintag38606$date
 swchl <- xtracto(xpos, ypos, tpos, "swchla8day", xrad, yrad)
 ```
 
@@ -271,18 +271,18 @@ This example extracts a time-series of monthly satellite <span style="color:blue
 First we define the longitude, latitude and temporal boundaries of the box: 
 
 ```{r setLims3D} 
-xpos<-c(235,240)
-ypos<-c(36,39)
-tpos<-c('1998-01-01','2014-11-30') 
+xpos <- c(235, 240)
+ypos <- c(36, 39)
+tpos <- c('1998-01-01', '2014-11-30') 
 ```
 
 The extract will contain data at all of the longitudes, latitudes and times in the requested dataset that are within the given bounds.
 
 If we run the `xtracto_3D` using the full temporal contraints defined above for <span style="color:red">SeaWiFS</span> we get an error: 
 
-```{r SeaWiFSBad, error=TRUE, purl = FALSE}
+```{r SeaWiFSBad, error = TRUE, purl = FALSE}
 require(xtractomatic)
-chlSeaWiFS<-xtracto_3D(xpos, ypos, tpos, 'swchlamday')
+chlSeaWiFS <- xtracto_3D(xpos, ypos, tpos, 'swchlamday')
 ```
 
 The error occurs because the time-range specified is outside of the time-bounds of the requested dataset ( <span style="color:red">SeaWIFS</span> data stopped in 2010). The error message generated by `xtracto_3D` explains this, and gives the temporal boundaries of the dataset. A simple way to extract to the end of a dataset is to use "last" (see [Taking advantage of "last times"](#lastTimes)): 
@@ -291,9 +291,9 @@ The error occurs because the time-range specified is outside of the time-bounds 
 ```{r SeaWiFS}
 require(xtractomatic)
 require(lubridate)
-tpos<-c("1998-01-16","last")
-SeaWiFS<-xtracto_3D(xpos, ypos, tpos, 'swchlamday')
-SeaWiFS$time<-as.Date(SeaWiFS$time)
+tpos <- c("1998-01-16","last")
+SeaWiFS <- xtracto_3D(xpos, ypos, tpos, 'swchlamday')
+SeaWiFS$time <- as.Date(SeaWiFS$time)
 ```
 
 A similar extract can be made for the <span style="color:red">MODIS</span> dataset. We know that the time-range of the <span style="color:red">MODIS</span> dataset is also smaller than that defined by `tpos`. We can determine the exact bounds of the <span style="color:red">MODIS</span> dataset by using the `getInfo` function: 
@@ -305,12 +305,12 @@ getInfo('mhchlamday')
 
 which gives us the min and max time of the dataset, which we can be used in the call (or use "last" as above):   
 
-```{r MODISchla,error=TRUE, purl = FALSE}
+```{r MODISchla, error = TRUE, purl = FALSE}
 require(xtractomatic)
 require(lubridate)
-tpos<-c('2003-01-16',"last")
-MODIS<-xtracto_3D(xpos, ypos, tpos,'mhchlamday')
-MODIS$time<-as.Date(MODIS$time)
+tpos <- c('2003-01-16', "last")
+MODIS <- xtracto_3D(xpos, ypos, tpos, 'mhchlamday')
+MODIS$time <- as.Date(MODIS$time)
 ```
 
 Similarly we can extract data from the <span style="color:red">VIIRS</span> dataset. 
@@ -318,8 +318,8 @@ Similarly we can extract data from the <span style="color:red">VIIRS</span> data
 ```{r VIIRSchla}
 require(xtractomatic)
 require(lubridate)
-tpos<-c("2012-01-15","last")
-VIIRS<-xtracto_3D(xpos, ypos, tpos, 'erdVH2chlamday')
+tpos <- c("2012-01-15", "last")
+VIIRS <- xtracto_3D(xpos, ypos, tpos, 'erdVH2chlamday')
 VIIRS$time <- as.Date(VIIRS$time)
 ```
 
@@ -336,12 +336,12 @@ VIIRS$time <- as.Date(VIIRS$time)
 in this case the <span style="color:blue">varname</span> is <span style="color:blue">chla</span>, the <span style="color:blue">ERDDAP</span> `datasetID` is <span style="color:blue">erdVH2chlamday</span>, and <span style="color:blue">data</span> contains the data on the grid defined by <span style="color:blue">longitude</span>, <span style="color:blue">latitude</span> and <span style="color:blue">time</span>.  The data from the different satellites can be compared by mapping the values for a given time period. To do so we define a helper function `mapFrame` to reshape the data to be used in `ggplot2`.
 
 ```{r mapFrame}
-mapFrame<- function(longitude,latitude,chla){
-  dims<-dim(chla)
-  chla<-array(chla,dims[1]*dims[2])
-  longitude<-longitude-360
-  chlaFrame<-expand.grid(x=longitude,y=latitude)
-  chlaFrame$chla<-chla
+mapFrame <- function(longitude, latitude, chla){
+  dims <- dim(chla)
+  chla <- array(chla, dims[1] * dims[2])
+  longitude <- longitude - 360
+  chlaFrame <- expand.grid(x = longitude, y = latitude)
+  chlaFrame$chla <- chla
   return(chlaFrame)
 }
 ```
@@ -349,23 +349,23 @@ mapFrame<- function(longitude,latitude,chla){
 and also define a helper function `plotFrame` to plot the data:
 
 ```{r plotFrame}
-plotFrame<-function(chlaFrame, xlim, ylim,title,logplot=TRUE){
+plotFrame <- function(chlaFrame, xlim, ylim, title, logplot = TRUE){
   require(mapdata)
   require(ggplot2)
   require(RColorBrewer)
   w <- map_data("worldHires", ylim = ylim, xlim = xlim)
-  myplot<-ggplot(data = chlaFrame, aes(x = x, y = y, fill = chla)) +
+  myplot <- ggplot(data = chlaFrame, aes(x = x, y = y, fill = chla)) +
     geom_raster(interpolate = FALSE) +
-    geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") +
+    geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") +
     theme_bw() + ylab("latitude") + xlab("longitude") +
-    coord_fixed(1.3,xlim = xlim, ylim = ylim)
-  if(logplot){
+    coord_fixed(1.3, xlim = xlim, ylim = ylim)
+  if (logplot) {
      my.col <- colorRampPalette(rev(brewer.pal(11, "RdBu")))(5.5)  
-    myplot<-myplot + scale_fill_gradientn(colours = my.col, na.value = NA,limits=c(-2,4.5)) +
+    myplot <- myplot + scale_fill_gradientn(colours = my.col, na.value = NA, limits = c(-2, 4.5)) +
       ggtitle(title)
     }else{
-     my.col <- colorRampPalette(rev(brewer.pal(11, "RdBu")))((diff(range(chlaFrame$chla,na.rm=TRUE)))) 
-     myplot<-myplot + scale_fill_gradientn(colours = my.col, na.value = NA) +
+     my.col <- colorRampPalette(rev(brewer.pal(11, "RdBu")))((diff(range(chlaFrame$chla, na.rm = TRUE)))) 
+     myplot <- myplot + scale_fill_gradientn(colours = my.col, na.value = NA) +
        ggtitle(title)
   }
   return(myplot)
@@ -374,49 +374,49 @@ plotFrame<-function(chlaFrame, xlim, ylim,title,logplot=TRUE){
 
 We examine <span style="color:blue">chlorophyll</span> in June 2012 a period when VIIRS and MODIS both had data.  Starting with <span style="color:red">VIIRS</span>:
 
-```{r VIIRSPlot, fig.width=5,fig.height = 5, fig.align='center'}
+```{r VIIRSPlot, fig.width = 5, fig.height = 5, fig.align = 'center'}
 require(lubridate)
-xlim<-c(235,240)-360
-ylim<-c(36,39)
-ttext<-VIIRS$time[month(VIIRS$time) == 6 & year(VIIRS$time) == 2012]
-chlaFrame<-mapFrame(VIIRS$longitude,VIIRS$latitude,VIIRS$data[,,month(VIIRS$time) == 6 & year(VIIRS$time) == 2012])
-chlaPlot<-plotFrame(chlaFrame,xlim,ylim,paste("VIIRS chla",ttext),logplot=FALSE)
+xlim <- c(235, 240) - 360
+ylim <- c(36, 39)
+ttext <- VIIRS$time[month(VIIRS$time) == 6 & year(VIIRS$time) == 2012]
+chlaFrame <- mapFrame(VIIRS$longitude,VIIRS$latitude,VIIRS$data[, , month(VIIRS$time) == 6 & year(VIIRS$time) == 2012])
+chlaPlot <- plotFrame(chlaFrame, xlim, ylim, paste("VIIRS chla", ttext), logplot = FALSE)
 chlaPlot
 ```
 
 <span style="color:blue">Chlorophyll</span> values are highly skewed, with low values most places and times, and then for some locations very high values.  For this reason <span style="color:blue">log(chlorophyll)</span> is usually plotted.
 
-```{r VIIRSLogPlot, fig.width=5,fig.height = 5, fig.align='center'}
-xlim<-c(235,240)-360
-ylim<-c(36,39)
-chlalogFrame<-mapFrame(VIIRS$longitude,VIIRS$latitude,
-                       log(VIIRS$data[,,month(VIIRS$time) == 6 & year(VIIRS$time) == 2012]))
-chlalogPlot<-plotFrame(chlalogFrame,xlim,ylim,paste("VIIRS log(chla)",ttext))
+```{r VIIRSLogPlot, fig.width = 5, fig.height = 5, fig.align = 'center'}
+xlim <- c(235, 240) - 360
+ylim <- c(36, 39)
+chlalogFrame <- mapFrame(VIIRS$longitude,VIIRS$latitude,
+                       log(VIIRS$data[, , month(VIIRS$time) == 6 & year(VIIRS$time) == 2012]))
+chlalogPlot <- plotFrame(chlalogFrame, xlim, ylim, paste("VIIRS log(chla)", ttext))
 chlalogPlot
 ```
 
 
 And also for <span style="color:red">MODIS</span>:
 
-```{r MODISLogPlot, fig.width=5,fig.height = 5, fig.align='center'}
-xlim<-c(235,240)-360
-ylim<-c(36,39)
-ttext<-MODIS$time[month(MODIS$time) == 6 & year(MODIS$time) == 2012]
-chlalogFrame<-mapFrame(MODIS$longitude,MODIS$latitude,
-                       log(MODIS$data[,,month(MODIS$time) == 6 & year(MODIS$time) == 2012]))
-chlalogPlot<-plotFrame(chlalogFrame,xlim,ylim,paste("MODIS log(chla)",ttext))
+```{r MODISLogPlot, fig.width = 5, fig.height = 5, fig.align = 'center'}
+xlim <- c(235, 240) - 360
+ylim <- c(36, 39)
+ttext <- MODIS$time[month(MODIS$time) == 6 & year(MODIS$time) == 2012]
+chlalogFrame <- mapFrame(MODIS$longitude, MODIS$latitude,
+                       log(MODIS$data[, , month(MODIS$time) == 6 & year(MODIS$time) == 2012]))
+chlalogPlot <- plotFrame(chlalogFrame, xlim, ylim, paste("MODIS log(chla)", ttext))
 chlalogPlot
 ```
 
 <span style="color:red">SeaWiFS</span> stopped functioning at the end of 2010, so we look at June, 2010:
 
-```{r SeaWiFSLogPlot, fig.width=5,fig.height = 5, fig.align='center'}
-xlim<-c(235,240)-360
-ylim<-c(36,39)
-ttext<-SeaWiFS$time[month(SeaWiFS$time) == 6 & year(SeaWiFS$time) == 2010]
-chlalogFrame<-mapFrame(SeaWiFS$longitude,SeaWiFS$latitude,
-                       log(SeaWiFS$data[,,month(SeaWiFS$time) == 6 & year(SeaWiFS$time) == 2010]))
-chlalogPlot<-plotFrame(chlalogFrame,xlim,ylim,paste("SeaWiFS log(chla)",ttext))
+```{r SeaWiFSLogPlot, fig.width = 5, fig.height = 5, fig.align = 'center'}
+xlim <- c(235, 240) - 360
+ylim <- c(36, 39)
+ttext <- SeaWiFS$time[month(SeaWiFS$time) == 6 & year(SeaWiFS$time) == 2010]
+chlalogFrame <- mapFrame(SeaWiFS$longitude, SeaWiFS$latitude,
+                       log(SeaWiFS$data[, , month(SeaWiFS$time) == 6 & year(SeaWiFS$time) == 2010]))
+chlalogPlot <- plotFrame(chlalogFrame, xlim, ylim, paste("SeaWiFS log(chla)", ttext))
 chlalogPlot
 ```
 
@@ -424,32 +424,32 @@ chlalogPlot
 
 We can also look at changes in <span style="color:blue">log(chlorophyll)</span> over time for a given region.  We examine a higly productive region just north of San Francisco, with limits (38N, 38.5N) and (123.5W, 123W).
 
-```{r chlaAvgset, fig.width=5,fig.height = 3, fig.align='center'}
+```{r chlaAvgset, fig.width = 5, fig.height = 3, fig.align='center'}
 require(ggplot2)
 require(mapdata)
-xlim1<-c(-123.5,-123) + 360
-ylim1<-c(38,38.5)
-w <- map_data("worldHires", ylim = c(37.5,39), xlim = c(-123.5,-122.))
-z<-ggplot() + geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") +
+xlim1 <- c(-123.5, -123) + 360
+ylim1 <- c(38, 38.5)
+w <- map_data("worldHires", ylim = c(37.5, 39), xlim = c(-123.5, -122.))
+z <- ggplot() + geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") +
    theme_bw() +
-   coord_fixed(1.3,xlim = c(-123.5,-122.), ylim = c(37.5,39))
-z+geom_rect(aes(xmin=-123.5,xmax=-123.,ymin=38.,ymax=38.5),colour="black",alpha=0.) +
+   coord_fixed(1.3, xlim = c(-123.5, -122.), ylim = c(37.5, 39))
+z + geom_rect(aes(xmin = -123.5, xmax = -123., ymin = 38., ymax = 38.5), colour = "black", alpha = 0.) +
   theme_bw() + ggtitle("Location of chla averaging")
 ```
 
 We define a helper function `chlaAvg` which finds the <span style="color:blue">latitudes</span> and <span style="color:blue">longitudes</span> in the datasets that are closest to the given limits, extracts the subset that is within that region, and then averages over the region to create a time series.
 
 ```{r chlaAvg}
-chlaAvg<-function(longitude,latitude,chlaData,xlim,ylim,dStart){
-  xIndex<-xlim
-  yIndex<-ylim
-  yIndex[1]<-which.min(abs(latitude - ylim[1]))
-  yIndex[2]<-which.min(abs(latitude - ylim[2]))
-  xIndex[1]<-which.min(abs(longitude- xlim[1]))
-  xIndex[2]<-which.min(abs(longitude- xlim[2]))
-  tempData<-chlaData[xIndex[1]:xIndex[2],yIndex[1]:yIndex[2],]
-  chlaAvg<- apply(tempData, 3, mean,na.rm=TRUE)
-  chlaAvg<-ts(chlaAvg, frequency = 12, start = dStart)
+chlaAvg <- function(longitude, latitude, chlaData, xlim, ylim, dStart){
+  xIndex <- xlim
+  yIndex <- ylim
+  yIndex[1] <- which.min(abs(latitude - ylim[1]))
+  yIndex[2] <- which.min(abs(latitude - ylim[2]))
+  xIndex[1] <- which.min(abs(longitude - xlim[1]))
+  xIndex[2] <- which.min(abs(longitude - xlim[2]))
+  tempData <- chlaData[xIndex[1]:xIndex[2],yIndex[1]:yIndex[2],]
+  chlaAvg <- apply(tempData, 3, mean, na.rm = TRUE)
+  chlaAvg <- ts(chlaAvg, frequency = 12, start = dStart)
 return(chlaAvg)
 }
 
@@ -463,31 +463,31 @@ We use  `chlaAvg` to extract the three time series over the region, combine them
 require(ggplot2)
 require(ggfortify)
 # Get both the average, and the average of log transformed chl for each point in the time series 
-SeaWiFSavg <- chlaAvg(SeaWiFS$longitude,SeaWiFS$latitude,SeaWiFS$data,xlim1,ylim1,c(1998,1))
-SeaWiFSlog <- chlaAvg(SeaWiFS$longitude,SeaWiFS$latitude,log(SeaWiFS$data),xlim1,ylim1,c(1998,1))
+SeaWiFSavg <- chlaAvg(SeaWiFS$longitude, SeaWiFS$latitude, SeaWiFS$data, xlim1, ylim1,c(1998, 1))
+SeaWiFSlog <- chlaAvg(SeaWiFS$longitude, SeaWiFS$latitude, log(SeaWiFS$data), xlim1, ylim1, c(1998, 1))
 # Run the same steps again for the MODIS and VIIRS datasets
-MODISavg <- chlaAvg(MODIS$longitude,MODIS$latitude,MODIS$data,xlim1,ylim1,c(2003,1))
-MODISlog <- chlaAvg(MODIS$longitude,MODIS$latitude,log(MODIS$data),xlim1,ylim1,c(2003,1))
+MODISavg <- chlaAvg(MODIS$longitude, MODIS$latitude, MODIS$data, xlim1, ylim1, c(2003, 1))
+MODISlog <- chlaAvg(MODIS$longitude, MODIS$latitude, log(MODIS$data), xlim1, ylim1, c(2003, 1))
 # run the same for VIIRS
-VIIRSavg <- chlaAvg(VIIRS$longitude,VIIRS$latitude,VIIRS$data,xlim1,ylim1,c(2012,1))
-VIIRSlog <- chlaAvg(VIIRS$longitude,VIIRS$latitude,log(VIIRS$data),xlim1,ylim1,c(2012,1))
+VIIRSavg <- chlaAvg(VIIRS$longitude, VIIRS$latitude, VIIRS$data, xlim1, ylim1, c(2012, 1))
+VIIRSlog <- chlaAvg(VIIRS$longitude, VIIRS$latitude, log(VIIRS$data), xlim1, ylim1, c(2012, 1))
 ```
 
 First the raw <span style="color:blue">chla</span> values:
 
-```{r plotChlaTS, fig.width=8,fig.height = 4, fig.align='center',warning=FALSE}
+```{r plotChlaTS, fig.width = 8, fig.height = 4, fig.align = 'center', warning = FALSE}
 require(ggplot2)
 require(ggfortify)
-Chla<-cbind(VIIRSavg,MODISavg,SeaWiFSavg)
+Chla <- cbind(VIIRSavg, MODISavg, SeaWiFSavg)
 autoplot(Chla, facets = FALSE) + theme_bw() + ggtitle("Chla time series off Point Reyes")
 ```
 
 and then <span style="color:blue">log(chla)</span>:
 
-```{r plotlogChlaTS, fig.width=8,fig.height = 4, fig.align='center',warning=FALSE}
+```{r plotlogChlaTS, fig.width = 8, fig.height = 4, fig.align = 'center', warning = FALSE}
 require(ggplot2)
 require(ggfortify)
-logChla<-cbind(VIIRSlog,MODISlog,SeaWiFSlog)
+logChla <- cbind(VIIRSlog, MODISlog, SeaWiFSlog)
 autoplot(logChla, facets = FALSE) + theme_bw() + ggtitle("log(Chla) time series off Point Reyes")
 ```
 
@@ -498,26 +498,26 @@ autoplot(logChla, facets = FALSE) + theme_bw() + ggtitle("log(Chla) time series 
 
 
 ```{r upCalc}
-upwell<- function(ektrx,ektry,coast_angle){
+upwell <- function(ektrx, ektry, coast_angle){
    pi <- 3.1415927
    degtorad <- pi/180.
-   alpha <- (360-coast_angle)*degtorad
+   alpha <- (360 - coast_angle) * degtorad
    s1 <- cos(alpha)
    t1 <- sin(alpha)
    s2 <- -1*t1
    t2 <- s1
-   perp <- s1*ektrx+t1*ektry
-   para <- s2*ektrx+t2*ektry
+   perp <- s1 * ektrx + t1 * ektry
+   para <- s2 * ektrx + t2 * ektry
 return(perp/10)
 }
 ```
 
 ```{r plotUpwellingFun}
-plotUpwell<-function(upwelling,upDates){
+plotUpwell <- function(upwelling, upDates){
 require(ggplot2)
 require(ggfortify)
 require(xts)
-temp<-xts(upwelling,order.by=upDates)
+temp <- xts(upwelling, order.by = upDates)
 autoplot(temp) + theme_bw() + ylab("Upwelling")
 }
 ```
@@ -526,38 +526,38 @@ We calculate 6-hourly upwelling at (37,-122) for the year 2005 and use the coast
 
 ```{r getUpw}
 require(xtractomatic)
-xpos<-c(238,238)
-ypos<-c(37,37)
-tpos<-c("2005-01-01","2005-12-31")
-ektrx<-xtracto_3D(xpos,ypos,tpos,"erdlasFnTran6ektrx")
-ektry<-xtracto_3D(xpos,ypos,tpos,"erdlasFnTran6ektry")
-upwelling<-upwell(ektrx$data,ektry$data,152)
+xpos <- c(238, 238)
+ypos <- c(37, 37)
+tpos <- c("2005-01-01", "2005-12-31")
+ektrx <- xtracto_3D(xpos, ypos, tpos, "erdlasFnTran6ektrx")
+ektry <- xtracto_3D(xpos, ypos, tpos, "erdlasFnTran6ektry")
+upwelling <- upwell(ektrx$data, ektry$data, 152)
 ```
 
 A plot of the result:
 
-```{r plotUpw1, fig.width=7,fig.height = 4, fig.align='center',warning=FALSE}
+```{r plotUpw1, fig.width = 7, fig.height = 4, fig.align = 'center', warning = FALSE}
 plotUpwell(upwelling, as.Date(ektrx$time))
 ```
 
 The one very low downwelling value distorts the plot, so values < -500 are set to NA and the data are replotted:
  
-```{r plotUpw3, fig.width=7,fig.height = 4, fig.align='center',warning=FALSE}
-tempUpw<-upwelling
+```{r plotUpw3, fig.width = 7, fig.height = 4, fig.align = 'center', warning = FALSE}
+tempUpw <- upwelling
 tempUpw[tempUpw < -500] <- NA
 plotUpwell(tempUpw, as.Date(ektrx$time))
 ```
 
 In 2005 there was a large die-off of sea animals and many felt that is was due to an anomalously delayed <span style="color:blue">upwelling</span>.  Let's compare <span style="color:blue">upwelling</span> in 2005 at that location with <span style="color:blue">upwelling</span> in 1977:
 
-```{r plotUpw77, fig.width=7,fig.height = 4, fig.align='center',warning=FALSE}
+```{r plotUpw77, fig.width = 7, fig.height = 4, fig.align = 'center', warning = FALSE}
 require(xtractomatic)
-tpos<-c("1977-01-01","1977-12-31")
-ektrx77<-xtracto_3D(xpos,ypos,tpos,"erdlasFnTran6ektrx")
-ektry77<-xtracto_3D(xpos,ypos,tpos,"erdlasFnTran6ektry")
-upwelling77<-upwell(ektrx77$data,ektry77$data,152)
+tpos <- c("1977-01-01", "1977-12-31")
+ektrx77 <- xtracto_3D(xpos, ypos, tpos, "erdlasFnTran6ektrx")
+ektry77 <- xtracto_3D(xpos, ypos, tpos, "erdlasFnTran6ektry")
+upwelling77 < -upwell(ektrx77$data, ektry77$data, 152)
 # remove the one big storm at the end
-tempUpw<-upwelling77
+tempUpw <- upwelling77
 tempUpw[tempUpw < -500] <- NA
 plotUpwell(tempUpw, as.Date(ektrx77$time))
 ```
@@ -572,23 +572,23 @@ We examine <span style="color:blue">north-south wind stress (tauy)</span> over t
 
 ```{r getStress}
 require(xtractomatic)
-xpos<-c(237,237)
-ypos<-c(36,36)
-tpos<-c("2009-10-04","2009-11-19")
-ascat<-xtracto_3D(xpos,ypos,tpos,"erdQAstress3daytauy")
-quikscat<-xtracto_3D(xpos,ypos,tpos,"erdQSstress3daytauy")
+xpos <- c(237, 237)
+ypos <- c(36, 36)
+tpos <- c("2009-10-04", "2009-11-19")
+ascat <- xtracto_3D(xpos, ypos, tpos, "erdQAstress3daytauy")
+quikscat <- xtracto_3D(xpos, ypos, tpos, "erdQSstress3daytauy")
 ```
 
 Plotting the result
 
-```{r plotstress, fig.width=6,fig.height = 4, fig.align='center',warning=FALSE}
+```{r plotstress, fig.width = 6,  fig.height = 4, fig.align = 'center', warning = FALSE}
 require(ggplot2)
 require(ggfortify)
 require(xts)
-ascatStress<-xts(ascat$data, order.by = as.Date(ascat$time))
-quikscatStress<-xts(quikscat$data, order.by = as.Date(quikscat$time))
-stressCompare<-cbind(ascatStress,quikscatStress)
-colnames(stressCompare)<-c("ascat","quikscat")
+ascatStress <- xts(ascat$data, order.by = as.Date(ascat$time))
+quikscatStress <- xts(quikscat$data, order.by = as.Date(quikscat$time))
+stressCompare <- cbind(ascatStress,quikscatStress)
+colnames(stressCompare) <- c("ascat", "quikscat")
 autoplot(stressCompare, facets = FALSE) + theme_bw()
 ```
 
@@ -600,16 +600,16 @@ The <span style="color:blue">ERDDAP</span> server understands a time of "last" a
 
 ```{r getPoes}
 require(xtractomatic)
-xpos<-c(235,240)
-ypos<-c(36,39)
-tpos<-c("last-5","last")
-poes<-xtracto_3D(xpos,ypos,tpos,"agsstamday")
+xpos <- c(235, 240)
+ypos <- c(36, 39)
+tpos <- c("last-5", "last")
+poes <- xtracto_3D(xpos, ypos, tpos, "agsstamday")
 
 ```
 
 Plotting the result using faceting in ggplot2:
 
-```{r plotPoes,fig.width=7.5, fig.height = 4, fig.align='center'}
+```{r plotPoes, fig.width = 7.5, fig.height = 4, fig.align = 'center'}
 require(ggplot2)
 require(reshape2)
 require(mapdata)
@@ -619,15 +619,15 @@ melt_sst <- function(longitude,latitude,mTime,sst) {
   ret <- melt(sst, value.name = "sst")
   cbind(date = mTime, ret)
 }
-xpos<-xpos-360
-longitude<-poes$longitude-360
-latitude<-poes$latitude
-imon<-1:6
-tmp <- lapply(imon, function(x) melt_sst(longitude,latitude,poes$time[x],poes$data[,,x]))
+xpos <- xpos - 360
+longitude <- poes$longitude - 360
+latitude <- poes$latitude
+imon <- 1:6
+tmp <- lapply(imon, function(x) melt_sst(longitude, latitude, poes$time[x], poes$data[,,x]))
 allmons <- do.call(rbind, tmp)
 w <- map_data("worldHires", ylim = ypos, xlim = xpos)
 ggplot(data = allmons, aes(x = long, y = lat, fill = sst)) + 
-    geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") +
+    geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") +
     geom_raster(interpolate = TRUE) +
     scale_fill_gradientn(colours = rev(rainbow(10)), na.value = NA) +
     theme_bw() +
@@ -644,40 +644,40 @@ What if we want to extract data from non-consecutive time periods, for example t
 
 require(reshape2)
 
-allyears=NULL
-xpos<-c(238,243)
-ypos<-c(30,35)
-for (year in 2009:2014){
-  tpos<-rep(paste(year,'-12-20',sep=""),2)
-  tmp <- xtracto_3D(xpos,ypos,tpos,'jplMURSST')
+allyears <- NULL
+xpos <- c(238, 243)
+ypos <- c(30, 35)
+for (year in 2009:2014) {
+  tpos <- rep(paste(year, '-12-20', sep = ""), 2)
+  tmp <- xtracto_3D(xpos, ypos, tpos, 'jplMURSST')
 #ggplot is sensitve that the grid is absolutely regular
-  tmp$latitude <- seq(range(tmp$latitude)[1], range(tmp$latitude)[2], length.out=length(tmp$latitude))
-  tmp$longitude <- seq(range(tmp$longitude)[1], range(tmp$longitude)[2], length.out=length(tmp$longitude))  
+  tmp$latitude <- seq(range(tmp$latitude)[1], range(tmp$latitude)[2], length.out = length(tmp$latitude))
+  tmp$longitude <- seq(range(tmp$longitude)[1], range(tmp$longitude)[2], length.out = length(tmp$longitude))  
   dimnames(tmp$data) <- list(long = tmp$longitude, lat = tmp$latitude) 
-  ret <- melt(tmp$data, value.name="sst")
-  ret <- cbind(date=tmp$time, ret)
-  allyears<-rbind(allyears,ret)
+  ret <- melt(tmp$data, value.name = "sst")
+  ret <- cbind(date = tmp$time, ret)
+  allyears <- rbind(allyears, ret)
 }
-allyears$long <- allyears$long-360 
+allyears$long <- allyears$long - 360 
 ```
 
 Plotting the result using faceting in ggplot2:
 
 
-```{r plotCatalina,fig.width=7.5, fig.height = 4, fig.align='center'}
+```{r plotCatalina, fig.width = 7.5, fig.height = 4, fig.align = 'center'}
 require(ggplot2)
 require(mapdata)
-xpos<-xpos-360
+xpos <- xpos - 360
 #long<-allyears$longitude-360
 #lat<-allyears$latitude
-coast <- map_data("worldHires", ylim = ypos, xlim = c(-123.5,-120.))
+coast <- map_data("worldHires", ylim = ypos, xlim = c(-123.5, -120.))
 
 ggplot(data = allyears, aes(x = long, y = lat, fill = sst)) + 
-  geom_polygon(data = coast, aes(x=long, y = lat, group = group), fill = "grey80") +
+  geom_polygon(data = coast, aes(x = long, y = lat, group = group), fill = "grey80") +
   geom_raster(interpolate = TRUE) +
   scale_fill_gradientn(colours = rev(rainbow(10)), na.value = NA) +
   theme_bw() +
-  coord_fixed(1.3,xlim = xpos, ylim = ypos) + 
+  coord_fixed(1.3, xlim = xpos, ylim = ypos) + 
   facet_wrap(~ date, nrow = 2)
 
 ```
@@ -697,33 +697,33 @@ The example below extracts a time-series  of monthly <span style="color:red">VII
  
 ```{r mbnmsChla}
 require(xtractomatic)
-tpos<-c("2014-09-01","2014-10-01")
+tpos <- c("2014-09-01", "2014-10-01")
 #tpos <-as.Date(tpos)
-xpos<-mbnms$Longitude
-ypos<-mbnms$Latitude
-sanctchl <- xtractogon(xpos,ypos,tpos,'erdVH2chlamday')
+xpos <- mbnms$Longitude
+ypos <- mbnms$Latitude
+sanctchl <- xtractogon(xpos, ypos, tpos, 'erdVH2chlamday')
 str(sanctchl)
 ```
 
 The extract (see`str(sanctchl)`) contains two time periods of <span style="color:blue">chlorophyll</span> masked for data only in the sanctuayr boundaries.  A plot of the the second time period: 
 
-```{r mbnmsChlaPlot, fig.width=5,fig.height = 5, fig.align='center'}
+```{r mbnmsChlaPlot, fig.width = 5, fig.height = 5, fig.align = 'center'}
 require(RColorBrewer)
 require(ggplot2)
 require(mapdata)
-xlim = c(-123.5,-121.)
-ylim = c(35,38)
-mbnmsFrame<-mapFrame(sanctchl$longitude+360,sanctchl$latitude,log(sanctchl$data[,,2]))
+xlim <- c(-123.5, -121.)
+ylim <- c(35, 38)
+mbnmsFrame <- mapFrame(sanctchl$longitude + 360, sanctchl$latitude, log(sanctchl$data[, , 2]))
 my.col <- colorRampPalette(rev(brewer.pal(11, "RdBu")))(5.5)  
 w <- map_data("worldHires", ylim = ylim, xlim = xlim)
-myplot<-ggplot() + geom_path(data=mbnms,aes(x=Longitude,y=Latitude),colour="black")   
-myplot<-myplot + 
-    geom_raster(data = mbnmsFrame, aes(x = x, y = y, fill = chla),interpolate = FALSE) + 
-    geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") +
-    theme_bw() + scale_fill_gradientn(colours = my.col, na.value = NA,limits=c(-2,4.5)) +
+myplot <- ggplot() + geom_path(data = mbnms, aes(x = Longitude, y = Latitude), colour = "black")   
+myplot <- myplot + 
+    geom_raster(data = mbnmsFrame, aes(x = x, y = y, fill = chla), interpolate = FALSE) + 
+    geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") +
+    theme_bw() + scale_fill_gradientn(colours = my.col, na.value = NA, limits = c(-2, 4.5)) +
     ylab("latitude") + xlab("longitude") +
-    coord_fixed(1.3,xlim = xlim, ylim = ylim) + 
-    ggtitle(paste("log(Chla) in MBNMS",sanctchl$time[2]))
+    coord_fixed(1.3, xlim = xlim, ylim = ylim) + 
+    ggtitle(paste("log(Chla) in MBNMS", sanctchl$time[2]))
 myplot
 ```
 
@@ -732,30 +732,30 @@ The MBNMS is famous for containing the Monterey Canyon, which reaches depths of 
 
 ```{r mbnmsBathy}
 require(xtractomatic)
-tpos<-c("2014-09-01","2014-10-01")
+tpos <- c("2014-09-01", "2014-10-01")
 #tpos <-as.Date(tpos)
-xpos<-mbnms$Longitude
-ypos<-mbnms$Latitude
-bathy <- xtractogon(xpos,ypos,tpos,'ETOPO180')
+xpos <- mbnms$Longitude
+ypos <- mbnms$Latitude
+bathy <- xtractogon(xpos, ypos, tpos, 'ETOPO180')
 str(bathy)
 ```
 
 Mapping the data to show the canyon:
 
-```{r mbnmsBathyPlot, fig.width=5,fig.height = 5, fig.align='center'}
+```{r mbnmsBathyPlot, fig.width = 5, fig.height = 5, fig.align = 'center'}
 require(ggplot2)
 require(RColorBrewer)
 require(mapdata)
-xlim = c(-123.5,-121.)
-ylim = c(35,38)
-mbnmsFrame<-mapFrame(bathy$longitude+360,bathy$latitude,bathy$data[,,1])
+xlim <- c(-123.5, -121.)
+ylim <- c(35, 38)
+mbnmsFrame <- mapFrame(bathy$longitude + 360, bathy$latitude, bathy$data[, , 1])
 w <- map_data("worldHires", ylim = ylim, xlim = xlim)
-myplot<-ggplot() + geom_path(data=mbnms,aes(x=Longitude,y=Latitude),colour="black")   
-myplot<-myplot + geom_raster(data = mbnmsFrame, aes(x = x, y = y, fill = chla),interpolate = FALSE) +
-    geom_polygon(data = w, aes(x=long, y = lat, group = group), fill = "grey80") +
-    theme_bw() + scale_fill_gradient(na.value = NA, name ="Depth") +
+myplot <- ggplot() + geom_path(data = mbnms,aes(x = Longitude, y = Latitude), colour = "black")   
+myplot <- myplot + geom_raster(data = mbnmsFrame, aes(x = x, y = y, fill = chla),interpolate = FALSE) +
+    geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") +
+    theme_bw() + scale_fill_gradient(na.value = NA, name = "Depth") +
     ylab("latitude") + xlab("longitude") +
-    coord_fixed(1.3,xlim = xlim, ylim = ylim) + ggtitle("MBNMS Bathymetry")
+    coord_fixed(1.3, xlim = xlim, ylim = ylim) + ggtitle("MBNMS Bathymetry")
 myplot
 ```
 
@@ -793,16 +793,16 @@ The difference is that the latter dataset (`mbchla8day`) is a running 8-day comp
 The `searchData` function can be used to search for a subset of that satisfy certain criteria. `searchData` requires a list of lists, where each element of the first item of the list has to be one of `dtypename, datasetname, longname, varname`, and the other is the string to search for in that field. For example to find all of the datasets that have a `varname` that contains `chl` and a `datasetname` that contains `mday` (most monthly datasets have `mday` in their name):
 
 ```{r searchData }
-list1<-list('varname','chl')
-list2<-list('datasetname','mday')
-mylist<-list(list1,list2)
+list1 <- list('varname', 'chl')
+list2 <- list('datasetname', 'mday')
+mylist <- list(list1, list2)
 searchData(mylist)
 ```
 
 which returns among others the three <span style="color:blue">chlorophyll</span> datasets extracted in the `xtracto_3D` section. Note that since the function requires a "list of lists", if only doing the first search the code would be:
 
-```{r searchData2, eval=FALSE }
-mylist<-list(list('varname','chl'))
+```{r searchData2, eval = FALSE }
+mylist <- list(list('varname', 'chl'))
 searchData(myList)
 ```
 
@@ -813,7 +813,7 @@ The <span style="color:blue">longname</span> of a dataset often contains a lot o
 ```{r erddapStruct}
 # to actually use do:
 # cat(paste(xtractomatic:::erddapStruct[,1],':' ,xtractomatic:::erddapStruct[,3],"\n"))
-cat(paste0(xtractomatic:::erddapStruct[1:5,1],': ' ,xtractomatic:::erddapStruct[1:5,3],"\n"))
+cat(paste0(xtractomatic:::erddapStruct[1:5, 1],': ' , xtractomatic:::erddapStruct[1:5, 3],"\n"))
 ```
 
 and then use `getInfo` with the <span style="color:blue">datasetname</span> to see all of the information on that dataset

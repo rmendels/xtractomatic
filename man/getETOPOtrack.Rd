@@ -5,7 +5,7 @@
 \title{retrieve ETOPO Bathymetry Data along a track}
 \usage{
 getETOPOtrack(dataStruct, xpos, ypos, xrad, yrad, verbose,
-  urlbase = "http://coastwatch.pfeg.noaa.gov/erddap/griddap/")
+  urlbase = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/")
 }
 \description{
 retrieve ETOPO Bathymetry Data along a track

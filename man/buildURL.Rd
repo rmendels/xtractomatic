@@ -5,7 +5,7 @@
 \title{Build an ERDDAP URL}
 \usage{
 buildURL(dataStruct, lonBounds, latBounds, timeBounds,
-  urlbase = "http://coastwatch.pfeg.noaa.gov/erddap/griddap/")
+  urlbase = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/")
 }
 \arguments{
 \item{dataStruct}{A structure describing the dataset from erddapStruct.rda}

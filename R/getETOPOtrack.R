@@ -16,13 +16,13 @@
 #'  @param urlbase - A character string giving the base URL of the ERDDAP server
 #'  @return Named Data array with data, or else NaN
 
-getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='http://coastwatch.pfeg.noaa.gov/erddap/griddap/'){
+getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='https://coastwatch.pfeg.noaa.gov/erddap/griddap/'){
   returnCode <- 0
   xlim1 <- min(xpos)
   xlim2 <- max(xpos)
   ylim1 <- min(ypos)
   ylim2 <- max(ypos)
-  out.dataframe <- as.data.frame(matrix(ncol=11, nrow=length(xpos)))
+  out.dataframe <- as.data.frame(matrix(ncol = 11, nrow = length(xpos)))
   dimnames(out.dataframe)[[2]] <- c('mean', 'stdev', 'n', 'satellite date', 'requested lon min', 'requested lon max', 'requested lat min', 'requested lat max', 'requested date', 'median', 'mad')
   oldLonIndex <- rep(NA_integer_, 2)
   oldLatIndex <- rep(NA_integer_, 2)
@@ -30,7 +30,7 @@ getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='
   newLonIndex <- rep(NA_integer_, 2)
   newLatIndex <- rep(NA_integer_, 2)
   newTimeIndex <- rep(NA_integer_, 2)
-  oldDataFrame <- as.data.frame(matrix(ncol=11, nrow=1))
+  oldDataFrame <- as.data.frame(matrix(ncol = 11, nrow = 1))
 
   if (dataStruct$datasetname == "etopo360") {
     if ((xlim1 < 0) | (xlim2 > 360)) {
@@ -55,11 +55,11 @@ getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='
   }
 
   if (returnCode == 0) {
-    myURL<-paste(urlbase, dataStruct$datasetname, '.csv?latitude[0:1:last]', sep="")
-    latitude <- utils::read.csv(myURL, skip=2, header=FALSE)
+    myURL <- paste(urlbase, dataStruct$datasetname, '.csv?latitude[0:1:last]', sep = "")
+    latitude <- utils::read.csv(myURL, skip = 2, header = FALSE)
     latitude <- latitude[, 1]
-    myURL <- paste(urlbase, dataStruct$datasetname, '.csv?longitude[0:1:last]', sep="")
-    longitude <- utils::read.csv(myURL, skip=2, header=FALSE)
+    myURL <- paste(urlbase, dataStruct$datasetname, '.csv?longitude[0:1:last]', sep = "")
+    longitude <- utils::read.csv(myURL, skip = 2, header = FALSE)
     longitude <- longitude[, 1]
     for (i in 1:length(xpos)) {
       # define bounding box
@@ -91,18 +91,18 @@ getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='
         erddapLons[2] <- longitude[newLonIndex[2]]
         myURL <- paste(urlbase, dataStruct$datasetname, '.nc?altitude',
                     '[(', erddapLats[1], '):1:(', erddapLats[2], ')]',
-                    '[(', erddapLons[1], '):1:(', erddapLons[2], ')]', sep="")
+                    '[(', erddapLons[1], '):1:(', erddapLons[2], ')]', sep = "")
         myHTTP <- getErddapURL(myURL, 'tmpExtract.nc', verbose)
         if (myHTTP == 0) {
           fileout <- 'tmpExtract.nc'
           datafileID <- ncdf4::nc_open(fileout)
-          datalongitude <- ncdf4::ncvar_get(datafileID, varid="longitude")
-          datalatitude <- ncdf4::ncvar_get(datafileID, varid="latitude")
+          datalongitude <- ncdf4::ncvar_get(datafileID, varid = "longitude")
+          datalatitude <- ncdf4::ncvar_get(datafileID, varid = "latitude")
           #          paramdata<-ncdf4::ncvar_get(datafileID,varid='altitude')
           paramdata <- as.vector(ncdf4::ncvar_get(datafileID))
           ncdf4::nc_close(datafileID)
-          out.dataframe[i, 1] <- mean(paramdata, na.rm=T)
-          out.dataframe[i, 2] <- stats::sd(paramdata, na.rm=T)
+          out.dataframe[i, 1] <- mean(paramdata, na.rm = T)
+          out.dataframe[i, 2] <- stats::sd(paramdata, na.rm = T)
           out.dataframe[i, 3] <- length(stats::na.omit(paramdata))
           out.dataframe[i, 4] <- NaN
           out.dataframe[i, 5] <- xmin
@@ -110,8 +110,8 @@ getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='
           out.dataframe[i, 7] <- ymin
           out.dataframe[i, 8] <- ymax
           out.dataframe[i, 9] <- NaN
-          out.dataframe[i, 10] <- stats::median(paramdata, na.rm=T)
-          out.dataframe[i, 11] <- stats::mad(paramdata, na.rm=T)
+          out.dataframe[i, 10] <- stats::median(paramdata, na.rm = T)
+          out.dataframe[i, 11] <- stats::mad(paramdata, na.rm = T)
           # clean thing up
           # remove temporary file
            if (file.exists(fileout)) {
@@ -127,8 +127,8 @@ getETOPOtrack <- function(dataStruct, xpos, ypos, xrad, yrad, verbose, urlbase='
     }#length
   }#return code
 
-  if(returnCode == -1){
-    out.dataframe=NaN
+  if (returnCode == -1) {
+    out.dataframe <- NaN
   }
   returnList <- list()
   returnList$out.dataframe <- out.dataframe

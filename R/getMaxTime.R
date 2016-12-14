@@ -7,10 +7,10 @@
 #'  @return dataStruct with dataStruct$maxTime updated
 #'
 
-getMaxTime <- function(dataStruct, urlbase1='http://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?') {
-    myURL <- paste(urlbase1,'maxTime&datasetID="', dataStruct$datasetname, '"', sep="")
-    tmp <- utils::read.csv(myURL, skip=2, stringsAsFactors=FALSE, header=FALSE)
-    dataStruct$maxTime <- as.Date(tmp$V1, origin='1970-01-01', tz= "GMT")
+getMaxTime <- function(dataStruct, urlbase1='https://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?') {
+    myURL <- paste(urlbase1,'maxTime&datasetID="', dataStruct$datasetname, '"', sep = "")
+    tmp <- utils::read.csv(myURL, skip = 2, stringsAsFactors = FALSE, header = FALSE)
+    dataStruct$maxTime <- as.Date(tmp$V1, origin = '1970-01-01', tz = "GMT")
   return(dataStruct)
 }
 

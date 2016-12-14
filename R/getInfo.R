@@ -57,14 +57,14 @@ structLength <- nrow(erddapStruct)
    }
 
    if (is.character(dtype)) {
-     dataStruct <- subset(erddapStruct, erddapStruct$dtypename==dtype)
+     dataStruct <- subset(erddapStruct, erddapStruct$dtypename == dtype)
    }else{
      dataStruct <- erddapStruct[dtype, 1:19]
    }
    dataStruct <- getMaxTime(dataStruct)
    tempNames <- colnames(dataStruct)
    tempNames[18] <- "timeSpacing(days)"
-   outFrame <- data.frame(matrix(NA, nrow=19, ncol=1), row.names=tempNames)
+   outFrame <- data.frame(matrix(NA, nrow = 19, ncol = 1), row.names = tempNames)
    for (j in 1:15) {
      outFrame[j, 1] <- dataStruct[1, j]
    }

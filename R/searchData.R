@@ -49,7 +49,7 @@
 searchData <- function(searchList=list(list("varname", "chl"))) {
   dataStruct <- erddapStruct
   listLen <- length(searchList)
-  myList<-c('dtypename', 'datasetname', 'longname', 'varname')
+  myList <- c('dtypename', 'datasetname', 'longname', 'varname')
   for (i in 1:listLen) {
     tempList <- searchList[[i]]
     requestType <- tempList[1]
@@ -61,8 +61,8 @@ searchData <- function(searchList=list(list("varname", "chl"))) {
       print(paste0('you requested :', requestType))
       return()
     }
-    request <- paste("grep('", requestString, "',dataStruct$", requestType,")", sep="")
-    myindex <- eval(parse(text=request))
+    request <- paste("grep('", requestString, "',dataStruct$", requestType,")", sep = "")
+    myindex <- eval(parse(text = request))
     dataStruct <- dataStruct[myindex, 1:19]
 
   }
@@ -71,7 +71,7 @@ searchData <- function(searchList=list(list("varname", "chl"))) {
      tempStruct <- dataStruct[i,]
      tempStruct <- getMaxTime(tempStruct)
      tempNames <- colnames(tempStruct)
-     outFrame <- data.frame(matrix(NA, nrow=19, ncol=1), row.names=tempNames)
+     outFrame <- data.frame(matrix(NA, nrow = 19, ncol = 1), row.names = tempNames)
      for (j in 1:15) {
        outFrame[j,1] <- tempStruct[1, j]
      }

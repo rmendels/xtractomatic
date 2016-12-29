@@ -41,11 +41,11 @@ if ((ylim1 < -90) | (ylim2 > 90)) {
     returnCode <- 1
 }
 if (returnCode == 0) {
-  myURL <- paste(urlbase, dataStruct$datasetname, '.csv?latitude[0:1:last]', sep = "")
-  latitude <- utils::read.csv(myURL, skip = 2, header = FALSE)
+  myURL <- paste(urlbase, dataStruct$datasetname, '.csv?latitude[0:1:last]', sep="")
+  latitude <- utils::read.csv(myURL, skip=2, header=FALSE)
   latitude <- latitude[, 1]
-  myURL <- paste(urlbase, dataStruct$datasetname, '.csv?longitude[0:1:last]', sep = "")
-  longitude <- utils::read.csv(myURL, skip = 2, header = FALSE)
+  myURL <- paste(urlbase, dataStruct$datasetname, '.csv?longitude[0:1:last]', sep="")
+  longitude <- utils::read.csv(myURL, skip=2, header=FALSE)
   longitude <- longitude[, 1]
   lat1 <- latitude[which.min(abs(latitude - ylim1))]
   lat2 <- latitude[which.min(abs(latitude - ylim2))]
@@ -53,14 +53,14 @@ if (returnCode == 0) {
   lon2 <- longitude[which.min(abs(longitude - xlim2))]
   myURL <- paste(urlbase, dataStruct$datasetname, '.nc?altitude',
               '[(', lat1, '):1:(', lat2,')]',
-              '[(', lon1, '):1:(', lon2, ')]', sep = "")
+              '[(', lon1, '):1:(', lon2, ')]', sep="")
   myHTTP <- getErddapURL(myURL, 'tmpExtract.nc', verbose)
   if (myHTTP == 0) {
     fileout <- 'tmpExtract.nc'
     datafileID <- ncdf4::nc_open(fileout)
-    datalongitude <- ncdf4::ncvar_get(datafileID, varid = "longitude")
-    datalatitude <- ncdf4::ncvar_get(datafileID, varid = "latitude")
-    param <- ncdf4::ncvar_get(datafileID, varid = 'altitude')
+    datalongitude <- ncdf4::ncvar_get(datafileID, varid="longitude")
+    datalatitude <- ncdf4::ncvar_get(datafileID, varid="latitude")
+    param <- ncdf4::ncvar_get(datafileID, varid='altitude')
     ncdf4::nc_close(datafileID)
     out.array <- list()
     out.array$data <- param
@@ -72,12 +72,16 @@ if (returnCode == 0) {
   }
 }
 #clean things up
-file.remove(fileout, showWarnings = FALSE)
+myDir <- getwd()
+myFile <- paste0(myDir, '/', fileout)
+  if (file.exists(myFile)) {
+    file.remove(myFile)
+  }
 
-if (returnCode == -1) {
+if(returnCode == -1){
   out.array <- NaN
 }
 
 
-    return(list(out.array = out.array, returnCode = returnCode))
+    return(list(out.array=out.array, returnCode=returnCode))
 }

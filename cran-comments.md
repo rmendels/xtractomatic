@@ -1,9 +1,9 @@
 ## Test environments
-* local OS X install, R 3.3.1
+* local OS X install, R 3.3.2
 * win-builder (devel and release)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. 
+There were no ERRORs or WARNINGs or NOTES on OS X
 
 There were 3 NOTEs:
 
@@ -19,21 +19,8 @@ Possibly mis-spelled words in DESCRIPTION:
 Everythng above is correct.
 
 
-** running examples for arch 'i386' ... [38s] NOTE
-Examples with CPU or elapsed time > 10s
-           user system elapsed
-xtracto_3D 1.30   0.29   13.78
-xtracto    1.14   0.24   10.34
-** running examples for arch 'x64' ... [33s] NOTE
-Examples with CPU or elapsed time > 10s
-           user system elapsed
-xtracto_3D 0.91    0.2   10.92
-
 What this package does is download data from a remote server.  I have cut down the examples significantly, but wanted to leave at least one running test.  I have gotten the times down to close to 10s.  The times will vary based on the speed of the test machine internet and how busy our server is, which is often busy.
 
 ## Comments
 
-Added URL for ERDDAP service in DESCRIPTION file as requested.
-Moved disclaimer to LICENSE.note as requested.
-Changed function names to include () in DESCRIPTION (xtracto()) as requested
-Changed Description of package as Requested
+As requested from the previous release,  the vignette now will make mutiple attempts to retrieve the data.

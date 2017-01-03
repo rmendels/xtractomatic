@@ -36,9 +36,9 @@ structure with data and dimensions:
 environmental data in a given longitude, latitude and time bounding box
 }
 \examples{
-xpos <- c(230, 240)
-ypos <- c(40, 45)
-tpos <- c('2006-05-05', '2006-06-21')
+xpos <- c(230, 232)
+ypos <- c(40, 42)
+tpos <- c('2006-05-05', '2006-05-06')
 extract <- xtracto_3D(xpos, ypos, tpos, 150)
 \donttest{
 extract <- xtracto_3D(xpos, ypos, tpos, 150, verbose=TRUE)

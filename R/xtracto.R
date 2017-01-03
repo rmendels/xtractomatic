@@ -31,8 +31,8 @@
 #' xpos <- c(230, 235)
 #' ypos <- c(40, 45)
 #' tpos <- c('2006-01-15', '2006-01-20')
-#' xlen <- 0.5
-#' ylen <- 0.5
+#' xlen <- 0.1
+#' ylen <- 0.1
 #' extract <- xtracto(xpos, ypos, tpos, 150, xlen, ylen)
 #' \donttest{
 #' extract <- xtracto(xpos, ypos,tpos, 150, xlen, ylen, verbose = TRUE)

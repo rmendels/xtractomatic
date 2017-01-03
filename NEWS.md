@@ -1,4 +1,4 @@
-# xtractomatic 3.1.2
+# xtractomatic 3.2.0
 
 * Changed to using https instead of http.
 * Examples dataset changed as previous one is no longer available

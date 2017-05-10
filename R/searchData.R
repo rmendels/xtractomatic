@@ -6,12 +6,12 @@
 #' @param searchList - A list of lists
 #' each list will contain the field to search and the search string
 #'
-#' @return prints out any matching information
+#' @return dataframe with any matching information
 #' @examples
-#' list1 <- list('varname', 'chl')
-#' list2 <- list('datasetname', 'mday')
-#' mylist <- list(list1, list2)
-#' searchData(mylist)
+#' list1 <- 'varname:chl'
+#' list2 <- 'datasetname:mday'
+#' mylist <- c(list1, list2)
+#' searchResult <- searchData(mylist)
 #' @section Details:
 #' searchData will search for the given string in any of the fields
 #' dtypename,datasetname,longname,varname.  Over the list of
@@ -47,13 +47,19 @@
 
 
 searchData <- function(searchList=list(list("varname", "chl"))) {
+  #junk <- which(grepl('VH2',unlist(erddapStruct['dtypename',])))
+  #pos = regexpr('pattern', x) # Returns position of 1st match in a string
+  #pos = gregexpr('pattern', x) # Returns positions of every match in a string
+
+  listLen <- length(searchList)
   dataStruct <- erddapStruct
   listLen <- length(searchList)
   myList <- c('dtypename', 'datasetname', 'longname', 'varname')
   for (i in 1:listLen) {
     tempList <- searchList[[i]]
-    requestType <- tempList[1]
-    requestString <- tempList[2]
+    pos = regexpr(':', tempList)
+    requestType <- substr(tempList, 1, pos - 1)
+    requestString <- substr(tempList, pos + 1, nchar(tempList))
     inList <- requestType %in% myList
     if (!inList) {
       print('requestType must be one of:')
@@ -61,28 +67,28 @@ searchData <- function(searchList=list(list("varname", "chl"))) {
       print(paste0('you requested :', requestType))
       return()
     }
-    request <- paste("grep('", requestString, "',dataStruct$", requestType,")", sep = "")
-    myindex <- eval(parse(text = request))
-    dataStruct <- dataStruct[myindex, 1:19]
+     myindex <- grep(requestString, dataStruct[requestType,])
+     dataStruct <- dataStruct[, myindex]
 
   }
-    ilen <- nrow(dataStruct)
+    ilen <- ncol(dataStruct)
+    if (!(ilen > 0)) {
+      stop('no match found for the combined search')
+    }
     for (i in 1:ilen) {
-     tempStruct <- dataStruct[i,]
+     tempStruct <- dataStruct[, i]
      tempStruct <- getMaxTime(tempStruct)
-     tempNames <- colnames(tempStruct)
-     outFrame <- data.frame(matrix(NA, nrow = 19, ncol = 1), row.names = tempNames)
-     for (j in 1:15) {
-       outFrame[j,1] <- tempStruct[1, j]
-     }
-     outFrame[16, 1] <- as.character(tempStruct[1, 16])
-     outFrame[17, 1] <- as.character(tempStruct[1, 17])
-     outFrame[18, 1] <- as.numeric(tempStruct[1, 18])/86400.
-     outFrame[19, 1] <- tempStruct[1, 19]
-     colnames(outFrame) <- c("")
-     print(tempStruct$dtypename)
-     print(outFrame)
-     cat("\n")
+     tempStruct$minTime <- as.character(tempStruct$minTime)
+     tempStruct$maxTime <- as.character(tempStruct$maxTime)
+     tempStruct$timeSpacing <- as.numeric(tempStruct$timeSpacing)/86400.
+     dataStruct[[i]] <- tempStruct
+     # dataStruct[, i] <- tempStruct
+     # colnames(outFrame) <- c("")
+     #print.data.frame(tempStruct)
+     #View(tempStruct)
+     #cat("\n")
 #     cat(paste0(format(names(dataStruct)), ": ", dataStruct, collapse = "\n"), "\n", sep = "")
-   }
+    }
+    #View(dataStruct)
+    return(dataStruct)
 }

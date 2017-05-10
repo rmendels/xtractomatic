@@ -2,7 +2,9 @@
 title: "Using the xtractomatic routines"
 author: "Cara Wilson and Roy Mendelssohn"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+rmarkdown::html_vignette: default
+
 vignette: >
   %\VignetteIndexEntry{Usingxtractomatic}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,7 +17,7 @@ library(xtractomatic)
 
 ## Introduction 
 
-`xtractomatic` is an <span style="color:blue">R</span> package developed to subset and extract satellite and other oceanographic related data from a remote server. The program can extract data for a moving point in time along a user-supplied set of longitude, latitude and time points; in a 3D bounding box; or within a polygon (through time).  The `xtractomatic` functions were originally developed for the marine biology tagging community, to match up environmental data available from satellites (sea-surface temperature, sea-surface chlorophyll, sea-surface height, sea-surface salinity, vector winds) to track data from various tagged animals or shiptracks (`xtracto`). The package has since been extended to include the routines that extract data a 3D bounding box (`xtracto_3D`) or within a polygon (`xtractogon`).  The `xtractomatic`  package accesses  data that are served through the <span style="color:blue">ERDDAP</span> (Environmental Research Division Data Access Program) server at the NOAA/SWFSC Environmental Research Division in Santa Cruz, California. The <span style="color:blue">ERDDAP</span> server can also be directly accessed at <http://coastwatch.pfeg.noaa.gov/erddap>. <span style="color:blue">ERDDAP</span> is a simple to use yet powerful web data service developed by Bob Simons.  
+`xtractomatic` is an <span style="color:blue">R</span> package developed to subset and extract satellite and other oceanographic related data from a remote server. The program can extract data for a moving point in time along a user-supplied set of longitude, latitude and time points; in a 3D bounding box; or within a polygon (through time).  The `xtractomatic` functions were originally developed for the marine biology tagging community, to match up environmental data available from satellites (sea-surface temperature, sea-surface chlorophyll, sea-surface height, sea-surface salinity, vector winds) to track data from various tagged animals or shiptracks (`xtracto`). The package has since been extended to include the routines that extract data a 3D bounding box (`xtracto_3D`) or within a polygon (`xtractogon`).  The `xtractomatic`  package accesses  data that are served through the <span style="color:blue">ERDDAP</span> (Environmental Research Division Data Access Program) server at the NOAA/SWFSC Environmental Research Division in Santa Cruz, California. In order that the user not be overwhelmed when searching for datasets, only a selected number of the datasets on that <span style="color:blue">ERDDAP</span> server, those viewed as most useful, are supported. The <span style="color:blue">ERDDAP</span> server can also be directly accessed at <http://coastwatch.pfeg.noaa.gov/erddap>. <span style="color:blue">ERDDAP</span> is a simple to use yet powerful web data service developed by Bob Simons.  
 
 This is the third version of `xtractomatic`.  The original version was created by Dave Foley for <span style="color:blue">Matlab</span> and was modified for <span style="color:blue">R</span> by Cindy Bessey and Dave Foley.  That version used a precurser to <span style="color:blue">ERDDAP</span> called <span style="color:blue">BobDAP</span>.  <span style="color:blue">BobDAP</span> was less flexible and provided access to fewer datasets than does <span style="color:blue">ERDDAP</span>.  The second version of xtractomatic was written by Roy Mendelssohn to use <span style="color:blue">ERDDAP</span> rather than <span style="color:blue">BobDAP</span>.  This version, also written by Roy Mendelssohn, has many improvements including access to many more datasets,  improved speed, better error checking, and crude search capabilites, and is the first version as a true <span style="color:blue">R</span> package.
 
@@ -36,7 +38,7 @@ There are three main data extraction functions in the `xtractomatic` package:
 
 There also are two information functions in the `xtractomatic` package: 
 
-- `searchData <- function(searchList=list(list("varname","chl"))) ` 
+- `searchData <- function(searchList= "varname:chl")  
 
 - `getInfo <- function(dtype)`
 
@@ -76,23 +78,19 @@ If the other libraries  (`httr`, `ncdf4`, and `sp`) have been installed they wil
 
 ### Using the R code examples
 
-Besides the `xtractomatic` packages, the examples below depend on `ggplot2`, `ggfortify`, `lubridate`, `mapdata`, `RColorBrewer`, `reshape2`,and `xts`.  These can be loaded beforehand (assuming they have been installed):
+Besides the `xtractomatic` packages, the examples below depend on `DT`, `ggplot2`,  `lubridate`, `mapdata`, `RColorBrewer`, and  `reshape2`.  These can be loaded beforehand (assuming they have been installed):
 
 ```{r loadpacks,eval=FALSE}
+library("DT")
 library("ggplot2")
-library("ggfortify") 
 library("lubridate")
 library("mapdata")
 library("RColorBrewer")
 library("reshape2")
-library("xts")
 ```
 
-In order that the code snippets can be more stand-alone, the needed libraries are always `required` in the examples.  The package `ggfortify` at the time of this writing is not on `CRAN`.  It can be installed using the `devtools` package:
+In order that the code snippets can be more stand-alone, the needed libraries are always `required` in the examples.  
 
-```{r ggfortify,eval=FALSE}
-devtools::install_github("sinhrks/ggfortify")
-```
 
 It should be emphasized that these other packages are used to manipulate and plot the data in <span style="color:blue">R</span>, other packages could be used as well.  The use of `xtractomatic` does not depend on these other packages.
 
@@ -146,7 +144,7 @@ goodtry <- -1
 options(warn = 2)
 while ((tryn <= numtries) & (goodtry == -1)) {
      tryn <- tryn + 1
-     swchl <- try(xtracto(xpos, ypos, tpos, "swchla8day", xlen = .2, ylen = .2), silent = TRUE)
+     swchl <- try(xtracto(xpos, ypos, tpos, "swchla8day", xlen = .2, ylen = .2))
      if (!class(swchl) == "try-error") {
        goodtry <- 1
      }
@@ -197,11 +195,11 @@ z + geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80
 
 The `xtracto` routine extracts the environment data in a box (defined by `xlen` and `ylen`) around the given location, and calculates statistics of the data in that box. The <span style="color:blue">median chla</span> concentration may make more sense in this situation
 
-```{r mediantrackPlot, fig.align= 'center', fig.width = 6, fig.height = 4}
+```{r mediantrackPlot, fig.align= 'center', fig.width = 6,fig.height = 4}
 require(ggplot2)
 # plot using ggplot
-z <- ggplot(alldata, aes(x = lon, y = lat)) + 
-   geom_point(aes(colour = median, shape = factor(missing)), size = 2.) + 
+z <- ggplot(alldata,aes(x = lon,y = lat)) + 
+   geom_point(aes(colour = median,shape = factor(missing)), size = 2.) + 
   scale_shape_manual(values = c(19, 1))
 z + geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") + 
   theme_bw() + 
@@ -228,13 +226,15 @@ topo <- xtracto(tagData$lon, tagData$lat, tagData$date, "ETOPO360", .1, .1)
 ```{r topotag1, echo = FALSE, warning = FALSE}
 require("xtractomatic")
 require("ggplot2")
+ylim <- c(15, 30)
+xlim <- c(-160, -105)
 numtries <- 5
 tryn <- 0
 goodtry <- -1
 options(warn = 2)
 while ((tryn <= numtries) & (goodtry == -1)) {
      tryn <- tryn + 1
-     topo <- try(xtracto(tagData$lon, tagData$lat, tagData$date, "ETOPO360", .1, .1), silent = TRUE)
+     topo <- try(xtracto(tagData$lon, tagData$lat, tagData$date, "ETOPO360", .1, .1))
      if (!class(topo) == "try-error") {
        goodtry <- 1
      }
@@ -246,11 +246,9 @@ and plot the track:
 
 ```{r topotagPlot, fig.align = 'center', fig.width = 6, fig.height = 4, warning = FALSE}
 require("ggplot2")
-ylim <- c(15, 30)
-xlim <- c(-160, -105)
 alldata <- cbind(tagData, topo)
 alldata$lon <- alldata$lon - 360
-z <- ggplot(alldata, aes(x = lon, y = lat)) + 
+z <- ggplot(alldata, aes(x = lon,y = lat)) + 
    geom_point(aes(colour = mean), size = 2.) + 
   scale_shape_manual(values = c(19, 1))
 z + geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") + 
@@ -342,7 +340,7 @@ require(xtractomatic)
 require(lubridate)
 tpos <- c("1998-01-16","last")
 SeaWiFS <- xtracto_3D(xpos, ypos, tpos, 'swchlamday')
-SeaWiFS$time <- as.Date(SeaWiFS$time)
+SeaWiFS$time <- lubridate::as_date(SeaWiFS$time)
 ```
 
 ```{r SeaWiFS1, echo = FALSE, warning = FALSE}
@@ -355,10 +353,10 @@ goodtry <- -1
 options(warn = 2)
 while ((tryn <= numtries) & (goodtry == -1)) {
      tryn <- tryn + 1
-     SeaWiFS <- try(xtracto_3D(xpos, ypos, tpos, 'swchlamday'), silent = TRUE)
+     SeaWiFS <- try(xtracto_3D(xpos, ypos, tpos, 'swchlamday'), silent=TRUE)
      if (!class(SeaWiFS) == "try-error") {
        goodtry <- 1
-       SeaWiFS$time <- as.Date(SeaWiFS$time)
+       SeaWiFS$time <- lubridate::as_date(SeaWiFS$time)
      }
   }
 ```
@@ -378,7 +376,7 @@ require(xtractomatic)
 require(lubridate)
 tpos <- c('2003-01-16', "last")
 MODIS <- xtracto_3D(xpos, ypos, tpos, 'mhchlamday')
-MODIS$time <- as.Date(MODIS$time)
+MODIS$time <- lubridate::as_date(MODIS$time)
 ```
 
 ```{r MODISchla1, echo = FALSE, warning = FALSE}
@@ -394,7 +392,7 @@ while ((tryn <= numtries) & (goodtry == -1)) {
      MODIS <- try(xtracto_3D(xpos, ypos, tpos, 'mhchlamday'), silent = TRUE)
      if (!class(MODIS) == "try-error") {
        goodtry <- 1
-       MODIS$time <- as.Date(MODIS$time)
+       MODIS$time <- lubridate::as_date(MODIS$time)
      }
   }
 
@@ -406,8 +404,8 @@ Similarly we can extract data from the <span style="color:red">VIIRS</span> data
 require(xtractomatic)
 require(lubridate)
 tpos <- c("2012-01-15", "last")
-VIIRS <- xtracto_3D(xpos, ypos, tpos, 'erdVH2chlamday')
-VIIRS$time <- as.Date(VIIRS$time)
+VIIRS <- xtracto_3D(xpos, ypos, tpos, 'erdVH3chlamday')
+VIIRS$time <- lubridate::as_date(VIIRS$time)
 ```
 
 ```{r VIIRSchla1, echo = FALSE, warning = FALSE}
@@ -420,10 +418,10 @@ goodtry <- -1
 options(warn = 2)
 while ((tryn <= numtries) & (goodtry == -1)) {
      tryn <- tryn + 1
-     VIIRS <- try(xtracto_3D(xpos, ypos, tpos, 'erdVH2chlamday'), silent = TRUE)
+     VIIRS <- try(xtracto_3D(xpos, ypos, tpos, 'erdVH3chlamday'), silent = TRUE)
      if (!class(VIIRS) == "try-error") {
        goodtry <- 1
-       VIIRS$time <- as.Date(VIIRS$time)
+       VIIRS$time <- lubridate::as_date(VIIRS$time)
      }
   }
 
@@ -439,7 +437,7 @@ while ((tryn <= numtries) & (goodtry == -1)) {
  * extract$time       : chr [time] times of extract
  * extract$altitude   : num altitude of extract
 
-in this case the <span style="color:blue">varname</span> is <span style="color:blue">chla</span>, the <span style="color:blue">ERDDAP</span> `datasetID` is <span style="color:blue">erdVH2chlamday</span>, and <span style="color:blue">data</span> contains the data on the grid defined by <span style="color:blue">longitude</span>, <span style="color:blue">latitude</span> and <span style="color:blue">time</span>.  The data from the different satellites can be compared by mapping the values for a given time period. To do so we define a helper function `mapFrame` to reshape the data to be used in `ggplot2`.
+in this case the <span style="color:blue">varname</span> is <span style="color:blue">chla</span>, the <span style="color:blue">ERDDAP</span> `datasetID` is <span style="color:blue">erdVH3chlamday</span>, and <span style="color:blue">data</span> contains the data on the grid defined by <span style="color:blue">longitude</span>, <span style="color:blue">latitude</span> and <span style="color:blue">time</span>.  The data from the different satellites can be compared by mapping the values for a given time period. To do so we define a helper function `mapFrame` to reshape the data to be used in `ggplot2`.
 
 ```{r mapFrame}
 mapFrame <- function(longitude, latitude, chla){
@@ -461,7 +459,7 @@ plotFrame <- function(chlaFrame, xlim, ylim, title, logplot = TRUE){
   require(RColorBrewer)
   w <- map_data("worldHires", ylim = ylim, xlim = xlim)
   myplot <- ggplot(data = chlaFrame, aes(x = x, y = y, fill = chla)) +
-    geom_raster(interpolate = FALSE) +
+    geom_raster(interpolate = FALSE, na.rm = TRUE) +
     geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") +
     theme_bw() + ylab("latitude") + xlab("longitude") +
     coord_fixed(1.3, xlim = xlim, ylim = ylim)
@@ -485,7 +483,7 @@ require(lubridate)
 xlim <- c(235, 240) - 360
 ylim <- c(36, 39)
 ttext <- VIIRS$time[month(VIIRS$time) == 6 & year(VIIRS$time) == 2012]
-chlaFrame <- mapFrame(VIIRS$longitude, VIIRS$latitude, VIIRS$data[, , month(VIIRS$time) == 6 & year(VIIRS$time) == 2012])
+chlaFrame <- mapFrame(VIIRS$longitude,VIIRS$latitude,VIIRS$data[, , month(VIIRS$time) == 6 & year(VIIRS$time) == 2012])
 chlaPlot <- plotFrame(chlaFrame, xlim, ylim, paste("VIIRS chla", ttext), logplot = FALSE)
 chlaPlot
 ```
@@ -495,7 +493,7 @@ chlaPlot
 ```{r VIIRSLogPlot, fig.width = 5, fig.height = 5, fig.align = 'center'}
 xlim <- c(235, 240) - 360
 ylim <- c(36, 39)
-chlalogFrame <- mapFrame(VIIRS$longitude, VIIRS$latitude,
+chlalogFrame <- mapFrame(VIIRS$longitude,VIIRS$latitude,
                        log(VIIRS$data[, , month(VIIRS$time) == 6 & year(VIIRS$time) == 2012]))
 chlalogPlot <- plotFrame(chlalogFrame, xlim, ylim, paste("VIIRS log(chla)", ttext))
 chlalogPlot
@@ -546,16 +544,16 @@ z + geom_rect(aes(xmin = -123.5, xmax = -123., ymin = 38., ymax = 38.5), colour 
 We define a helper function `chlaAvg` which finds the <span style="color:blue">latitudes</span> and <span style="color:blue">longitudes</span> in the datasets that are closest to the given limits, extracts the subset that is within that region, and then averages over the region to create a time series.
 
 ```{r chlaAvg}
-chlaAvg <- function(longitude, latitude, chlaData, xlim, ylim, dStart){
+chlaAvg <- function(longitude, latitude, chlaData, xlim, ylim, sTimes){
   xIndex <- xlim
   yIndex <- ylim
   yIndex[1] <- which.min(abs(latitude - ylim[1]))
   yIndex[2] <- which.min(abs(latitude - ylim[2]))
   xIndex[1] <- which.min(abs(longitude - xlim[1]))
   xIndex[2] <- which.min(abs(longitude - xlim[2]))
-  tempData <- chlaData[xIndex[1]:xIndex[2], yIndex[1]:yIndex[2],]
+  tempData <- chlaData[xIndex[1]:xIndex[2],yIndex[1]:yIndex[2],]
   chlaAvg <- apply(tempData, 3, mean, na.rm = TRUE)
-  chlaAvg <- ts(chlaAvg, frequency = 12, start = dStart)
+  chlaAvg <- data.frame(chla = chlaAvg, time = sTimes)
 return(chlaAvg)
 }
 
@@ -567,36 +565,38 @@ We use  `chlaAvg` to extract the three time series over the region, combine them
 
 ```{r AverageChla}
 require(ggplot2)
-require(ggfortify)
 xlim1 <- c(-123.5, -123) + 360
 ylim1 <- c(38, 38.5)
 # Get both the average, and the average of log transformed chl for each point in the time series 
-SeaWiFSavg <- chlaAvg(SeaWiFS$longitude, SeaWiFS$latitude, SeaWiFS$data, xlim1, ylim1,c(1998, 1))
-SeaWiFSlog <- chlaAvg(SeaWiFS$longitude, SeaWiFS$latitude, log(SeaWiFS$data), xlim1, ylim1, c(1998, 1))
+SeaWiFSavg <- chlaAvg(SeaWiFS$longitude, SeaWiFS$latitude, SeaWiFS$data, xlim1, ylim1,SeaWiFS$time)
+SeaWiFSlog <- chlaAvg(SeaWiFS$longitude, SeaWiFS$latitude, log(SeaWiFS$data), xlim1, ylim1, SeaWiFS$time)
 # Run the same steps again for the MODIS and VIIRS datasets
-MODISavg <- chlaAvg(MODIS$longitude, MODIS$latitude, MODIS$data, xlim1, ylim1, c(2003, 1))
-MODISlog <- chlaAvg(MODIS$longitude, MODIS$latitude, log(MODIS$data), xlim1, ylim1, c(2003, 1))
+MODISavg <- chlaAvg(MODIS$longitude, MODIS$latitude, MODIS$data, xlim1, ylim1, MODIS$time)
+MODISlog <- chlaAvg(MODIS$longitude, MODIS$latitude, log(MODIS$data), xlim1, ylim1, MODIS$time)
 # run the same for VIIRS
-VIIRSavg <- chlaAvg(VIIRS$longitude, VIIRS$latitude, VIIRS$data, xlim1, ylim1, c(2012, 1))
-VIIRSlog <- chlaAvg(VIIRS$longitude, VIIRS$latitude, log(VIIRS$data), xlim1, ylim1, c(2012, 1))
+VIIRSavg <- chlaAvg(VIIRS$longitude, VIIRS$latitude, VIIRS$data, xlim1, ylim1, VIIRS$time)
+VIIRSlog <- chlaAvg(VIIRS$longitude, VIIRS$latitude, log(VIIRS$data), xlim1, ylim1, VIIRS$time)
 ```
 
 First the raw <span style="color:blue">chla</span> values:
 
 ```{r plotChlaTS, fig.width = 8, fig.height = 4, fig.align = 'center'}
-require(ggfortify)
-Chla <- cbind(VIIRSavg, MODISavg, SeaWiFSavg)
-autoplot(Chla, facets = FALSE, na.rm = TRUE) + theme_bw() + ggtitle("Chla time series off Point Reyes")
+require(ggplot2)
+Chla <- rbind(VIIRSavg, MODISavg, SeaWiFSavg)
+Chla$sat <- c(rep("VIIRS",nrow(VIIRSavg)), rep("MODIS",nrow(MODISavg)), rep("SeaWIF", nrow(SeaWiFSavg)))
+Chla$sat <- as.factor(Chla$sat)
+ggplot(data = Chla, aes(time, chla, colour = sat)) + geom_line(na.rm = TRUE) + theme_bw()
 
 ```
 
 and then <span style="color:blue">log(chla)</span>:
 
 ```{r plotlogChlaTS, fig.width = 8, fig.height = 4, fig.align = 'center'}
-require(ggfortify)
-logChla <- cbind(VIIRSlog, MODISlog, SeaWiFSlog)
-autoplot(logChla, facets = FALSE, na.rm = TRUE) + theme_bw() + ggtitle("log(Chla) time series off Point Reyes")
-
+require(ggplot2)
+logChla <- rbind(VIIRSlog, MODISlog, SeaWiFSlog)
+logChla$sat <- c(rep("VIIRS",nrow(VIIRSlog)), rep("MODIS",nrow(MODISlog)), rep("SeaWIF", nrow(SeaWiFSlog)))
+logChla$sat <- as.factor(Chla$sat)
+ggplot(data = logChla, aes(time, chla, colour = sat)) + geom_line(na.rm = TRUE)  + theme_bw()
 ```
 
 
@@ -623,10 +623,8 @@ return(perp/10)
 ```{r plotUpwellingFun}
 plotUpwell <- function(upwelling, upDates){
 require(ggplot2)
-require(ggfortify)
-require(xts)
-temp <- xts(upwelling, order.by = upDates)
-autoplot(temp) + theme_bw() + ylab("Upwelling")
+temp <- data.frame(upwelling = upwelling, time = upDates)
+ggplot(temp, aes(time, upwelling)) + geom_line(na.rm = TRUE) + theme_bw()
 }
 ```
 
@@ -760,13 +758,12 @@ Plotting the result
 
 ```{r plotstress, fig.width = 6,  fig.height = 4, fig.align = 'center', warning = FALSE}
 require(ggplot2)
-require(ggfortify)
-require(xts)
-ascatStress <- xts(ascat$data, order.by = as.Date(ascat$time))
-quikscatStress <- xts(quikscat$data, order.by = as.Date(quikscat$time))
-stressCompare <- cbind(ascatStress,quikscatStress)
-colnames(stressCompare) <- c("ascat", "quikscat")
-autoplot(stressCompare, facets = FALSE) + theme_bw()
+ascatStress <- data.frame(stress = ascat$data, time = as.Date(ascat$time))
+quikscatStress <- data.frame(stress = quikscat$data, time = as.Date(quikscat$time))
+stressCompare <- rbind(ascatStress,quikscatStress)
+stressCompare$sat <- c(rep("ascat", nrow(ascatStress)), rep("quikscat", nrow(quikscatStress)))
+stressCompare$sat <- as.factor(stressCompare$sat)
+ggplot(data = stressCompare, aes(time, stress, colour = sat)) + geom_line(na.rm = TRUE) + theme_bw()
 ```
 
 While the two <span style="color:blue">wind stress</span> series are close, there is a significant difference in the negative (southward) value on October 28, that is there will be a signifcant difference in the estimated (positive) upwelling value.  Combining the series into a longer series would be desirable, but this suggests that there could be problems with inter-year comparisons due to the different sources of the data.
@@ -812,7 +809,7 @@ require(ggplot2)
 require(reshape2)
 require(mapdata)
 
-melt_sst <- function(longitude, latitude, mTime, sst) {
+melt_sst <- function(longitude,latitude,mTime,sst) {
   dimnames(sst) <- list(long = longitude, lat = latitude)
   ret <- melt(sst, value.name = "sst")
   cbind(date = mTime, ret)
@@ -847,7 +844,7 @@ xpos <- c(238, 243)
 ypos <- c(30, 35)
 for (year in 2009:2014) {
   tpos <- rep(paste(year, '-12-20', sep = ""), 2)
-  tmp <- xtracto_3D(xpos, ypos, tpos, 'jplMURSST')
+  tmp <- xtracto_3D(xpos, ypos, tpos, 'jplMURSST41')
 #ggplot is sensitve that the grid is absolutely regular
   tmp$latitude <- seq(range(tmp$latitude)[1], range(tmp$latitude)[2], length.out = length(tmp$latitude))
   tmp$longitude <- seq(range(tmp$longitude)[1], range(tmp$longitude)[2], length.out = length(tmp$longitude))  
@@ -902,7 +899,7 @@ tpos <- c("2014-09-01", "2014-10-01")
 #tpos <-as.Date(tpos)
 xpos <- mbnms$Longitude
 ypos <- mbnms$Latitude
-sanctchl <- xtractogon(xpos, ypos, tpos, 'erdVH2chlamday')
+sanctchl <- xtractogon(xpos, ypos, tpos, 'erdVH3chlamday')
 str(sanctchl)
 ```
 
@@ -918,7 +915,7 @@ goodtry <- -1
 options(warn = 2)
 while ((tryn <= numtries) & (goodtry == -1)) {
      tryn <- tryn + 1
-     sanctchl <- try(xtractogon(xpos, ypos, tpos, 'erdVH2chlamday'), silent = TRUE)
+     sanctchl <- try(xtractogon(xpos, ypos, tpos, 'erdVH3chlamday'), silent = TRUE)
      if (!class(sanctchl) == "try-error") {
        goodtry <- 1
        str(sanctchl)
@@ -994,7 +991,7 @@ xlim <- c(-123.5, -121.)
 ylim <- c(35, 38)
 mbnmsFrame <- mapFrame(bathy$longitude + 360, bathy$latitude, bathy$data[, , 1])
 w <- map_data("worldHires", ylim = ylim, xlim = xlim)
-myplot <- ggplot() + geom_path(data = mbnms, aes(x = Longitude, y = Latitude), colour = "black")   
+myplot <- ggplot() + geom_path(data = mbnms,aes(x = Longitude, y = Latitude), colour = "black")   
 myplot <- myplot + geom_raster(data = mbnmsFrame, aes(x = x, y = y, fill = chla),interpolate = FALSE, na.rm = TRUE) +
     geom_polygon(data = w, aes(x = long, y = lat, group = group), fill = "grey80") +
     theme_bw() + scale_fill_gradient(na.value = NA, name = "Depth") +
@@ -1034,30 +1031,34 @@ getInfo('mbchla8day')
 
 The difference is that the latter dataset (`mbchla8day`) is a running 8-day composite, so there is a value for every day, while the former dataset (`mhchla8day`) calculates composites for non-overlapping 8-day periods.
 
-The `searchData` function can be used to search for a subset of that satisfy certain criteria. `searchData` requires a list of lists, where each element of the first item of the list has to be one of `dtypename, datasetname, longname, varname`, and the other is the string to search for in that field. For example to find all of the datasets that have a `varname` that contains `chl` and a `datasetname` that contains `mday` (most monthly datasets have `mday` in their name):
+The `searchData` function can be used to search for a subset of that satisfy certain criteria (note that the `searchData` has changed since the previous version). `searchData` requires a list of of entries of the form "searchType:searchString", where each element of "the first item of "searchType"" has to be one of `dtypename, datasetname, longname, varname`, and "searchString" is the string to search for in that field. For example to find all of the datasets that have a `varname` that contains `chl` and a `datasetname` that contains `mday` (most monthly datasets have `mday` in their name):
 
 ```{r searchData }
-list1 <- list('varname', 'chl')
-list2 <- list('datasetname', 'mday')
-mylist <- list(list1, list2)
-searchData(mylist)
+mylist <- list('varname:chl', 'datasetname:mday')
+searchResult <- searchData(mylist)
 ```
 
-which returns among others the three <span style="color:blue">chlorophyll</span> datasets extracted in the `xtracto_3D` section. Note that since the function requires a "list of lists", if only doing the first search the code would be:
+which returns among others the three <span style="color:blue">chlorophyll</span> datasets extracted in the `xtracto_3D` section. The search result can be easily perused by using `View()` or by:
+
+```{r}
+require("DT")
+DT::datatable(searchResult)
+```
+
+
+If only doing the first search the code would be:
 
 ```{r searchData2, eval = FALSE }
-mylist <- list(list('varname', 'chl'))
-searchData(myList)
+mylist <- list('varname:chl')
+searchResult <- searchData(mylist)
 ```
 
-`searchData` iteratively refines the matches in the order given by the list of list, thus it can be viewed as doing a logical "AND" on the matches.
+`searchData` iteratively refines the matches in the order given by the list, thus it can be viewed as doing a logical "AND" on the matches.
 
 The <span style="color:blue">longname</span> of a dataset often contains a lot of this information. Alternatively you can generate a list of the <span style="color:blue">datasetname</span> and <span style="color:blue">longname</span> of all of the datasets accessed by `xtractomatic` (we only show the first five lines of output):
 
 ```{r erddapStruct}
-# to actually use do:
-# cat(paste(xtractomatic:::erddapStruct[,1],':' ,xtractomatic:::erddapStruct[,3],"\n"))
-cat(paste0(xtractomatic:::erddapStruct[1:5, 1],': ' , xtractomatic:::erddapStruct[1:5, 3],"\n"))
+cat(paste0(xtractomatic:::erddapStruct["datasetname", 1:5],': ' , xtractomatic:::erddapStruct["longname", 1:5],"\n"))
 ```
 
 and then use `getInfo` with the <span style="color:blue">datasetname</span> to see all of the information on that dataset
@@ -1070,17 +1071,19 @@ and then use `getInfo` with the <span style="color:blue">datasetname</span> to s
 
 ## What has Changed and Steps Going Forward {#new}
 
+The function `searchData()` no longer uses a list of list, instead it uses a simple list where the each "searchType" and "searchString" are set off by a colon as in "searchType:searchString".
+
 In this and all past version of `xtractomatic`, information about the datasets was built into the functions.  In the present case the dataset information is stored in a dataframe called `erddapStruct` which is auotmatically loaded when you loaded the package.
 
 This has the disadvantage that it is tied to specific datasets and a specifc <span style="color:blue">ERDDAP</span> server, rather than working with any dataset served by any <span style="color:blue">ERDDAP</span>.  
 
-The dataset was specified by the `dtype`, which could be either a number or a character string, and references the information in that dataframe.  The `dtype` names in this version for the most part are same, **BUT THE `dtype` NUMBERS HAVE CHANGED**. If you have used `xtractomatic` before you need to check that the `dtype` information that you are passing is what you think it is.  You can do this using the supplied `getInfo` or `searchData` functions or peruse the `erddapStruct` dataframe.
-There are many more datasets available in this version, adn now "last" can be used as time to get the last time period available for that dataset.
+The dataset was specified by the `dtype`, which could be either a number or a character string, and references the information in that dataframe.  The `dtype` names in this version for the most part are same, **BUT `dtype` AS  NUMBERS ARE NO LONGER SUPPORTED**. If you have used `xtractomatic` before you need to check that the `dtype` information that you are passing is what you think it is.  You can do this using the supplied `getInfo()` or `searchData()` functions or peruse the `erddapStruct` dataframe.
+There are many more datasets available in this version, and now "last" can be used as time to get the last time period available for that dataset.
 
-### `dtype` as number is deprecated
+Every <span style="color:blue">ERDDAP</span> dataset has an <span style="color:blue">ERDDAP</span> "dataset ID", as well one or more variables associated with that "dataset ID". Some datasets, such as the <span style="color:blue">ASCAT winds</span> have multiple variables associated with the dataset:
 
-It is strongly recommended that you move away from passing `dtype` as a number, as the numbers can change and will not be in the next version.  Any <span style="color:blue">ERDDAP</span> dataset has an <span style="color:blue">ERDDAP</span> "dataset ID", as well one or more variables associated with that "dataset ID". Some datasets, such as the <span style="color:blue">ASCAT winds</span> have multiple variables associated with the dataset:
+<https://coastwatch.pfeg.noaa.gov/erddap/griddap/erdQAstress1day.html>.
 
-<http://coastwatch.pfeg.noaa.gov/erddap/griddap/erdQAstress1day.html>.
+This information is contained in `erddapStruct$datasetname` and `erddapStruct$varname`. Since a single dataset may have more than one variable,  `dtype` as character string is a way to have a unique dataset id and variable name in a single variable.  A more general version of `xtractomatic`,  called `rerddapXtracto`, is under development.  `rerddapXtracto` will work with any gridded dataset on any <span style="color:blue">ERDDAP</span>  by using the <span style="color:blue">ROpenSci</span> package `rerddap`. Information on `rerddapXtracto` can be found at:
 
-This information is contained in `erddapStruct$datasetname` and `erddapStruct$varname`. Since a single dataset may have more than one variable,  `dtype` as character string is a way to have a unique dataset id and variable name in a single variable.  In the next version, no information about the datasets will be built into the package, and `xtractomatic` will rely on the search and query capabilities of <span style="color:blue">ERDDAP</span>. Then the request will be based on a list of the form  `c(dataset id, varname1,  varname2)`.  This is the approach being used in the <span style="color:blue">ROpenSci</span> projects `rnoaa` and `rerddap`, and we will be making use of parts their code.
+<https://github.com/rmendels/rerddapXtracto>

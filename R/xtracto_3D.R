@@ -22,13 +22,12 @@
 #'   \item extract$time - the times of the extracts
 #'   }
 #' @examples
-#' xpos <- c(230, 232)
-#' ypos <- c(40, 42)
-#' tpos <- c('2006-05-05', '2006-05-06')
-#' extract <- xtracto_3D(xpos, ypos, tpos, 150)
-#' \donttest{
-#' extract <- xtracto_3D(xpos, ypos, tpos, 150, verbose=TRUE)
+#' xpos <- c(230, 240)
+#' ypos <- c(40, 45)
+#' tpos <- c('2006-05-05', '2006-06-21')
 #' extract <- xtracto_3D(xpos, ypos, tpos, 'erdMBsstd8day')
+#' \donttest{
+#' extract <- xtracto_3D(xpos, ypos, tpos, 'erdMBsstd8day', verbose=TRUE)
 #' }
 
 xtracto_3D <- function(xpos, ypos, tpos, dtype, verbose=FALSE) {
@@ -36,25 +35,20 @@ xtracto_3D <- function(xpos, ypos, tpos, dtype, verbose=FALSE) {
   # default URL for NMFS/SWFSC/ERD  ERDDAP server
   urlbase <- 'https://coastwatch.pfeg.noaa.gov/erddap/griddap/'
   urlbase1 <- 'https://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?'
-  structLength <- nrow(erddapStruct)
 
   if ((length(xpos) != 2) | (length(ypos) != 2)  |  (length(tpos) != 2)) {
     stop('input vectors not all of length 2')
   }
-  if (is.character(dtype)) {
-    dtypePresent <- dtype %in% erddapStruct$dtypename
-    if (!dtypePresent) {
-      print('dataset name: ', dtype)
-      stop('no matching dataset found')
-    }
-    dataStruct <- subset(erddapStruct, erddapStruct$dtypename == dtype)
-  } else {
-    if ((dtype < 1) | (dtype > structLength)) {
-      print('dataset number out of range - must be between 1 and 107: ', dtype)
-      stop('no matching dataset found')
-    }
-    dataStruct <- erddapStruct[dtype,]
+  if (!is.character(dtype)) {
+    stop('dtype must be a character string')
   }
+  dtypePresent <- dtype %in% colnames(erddapStruct)
+  if (!dtypePresent) {
+    print(paste0('dataset name does not match: ', dtype))
+    print('use "getinfo" to find relevant information ')
+    stop('no matching dataset found')
+  }
+  dataStruct <- erddapStruct[[dtype]]
   xpos1 <- xpos
   #put given longitudes on the dataset longitudes
   if (dataStruct$lon360) {
@@ -86,7 +80,7 @@ longitude <- dataCoordList[[4]]
 if (dataStruct$hasAlt) {
   altitude <- dataCoordList[[5]]
 }
-lenTime <-length(isotime)
+lenTime <- length(isotime)
 dataStruct$maxTime <- isotime[lenTime]
 tpos1 <- tpos
 if (grepl("last", tpos1[1])) {
@@ -101,13 +95,13 @@ if (grepl("last", tpos1[2])) {
   tlen <- nchar(tpos1[2])
   arith <- substr(tpos1[2], 5, tlen)
   tempVar <- paste0(as.character(lenTime), arith)
-  tIndex <- eval(parse(text=tempVar))
+  tIndex <- eval(parse(text = tempVar))
   tpos1[2] <- isotime[tIndex]
 }
 
 
 #convert time format
-udtpos <- as.Date(tpos1, origin='1970-01-01', tz= "GMT")
+udtpos <- as.Date(tpos1, origin = '1970-01-01', tz= "GMT")
 
 xposLim <- c(min(xpos1), max(xpos1))
 yposLim <- c(min(ypos), max(ypos))
@@ -136,9 +130,9 @@ erddapLons <- rep(NA_real_, 2)
 erddapTimes <- rep(NA_real_, 2)
 erddapLats[1] <- latitude[which.min(abs(latitude - latBounds[1]))]
 erddapLats[2] <- latitude[which.min(abs(latitude - latBounds[2]))]
-erddapLons[1] <- longitude[which.min(abs(longitude- lonBounds[1]))]
+erddapLons[1] <- longitude[which.min(abs(longitude - lonBounds[1]))]
 erddapLons[2] <- longitude[which.min(abs(longitude - lonBounds[2]))]
-erddapTimes[1] <- isotime[which.min(abs(udtime- tposLim[1]))]
+erddapTimes[1] <- isotime[which.min(abs(udtime - tposLim[1]))]
 erddapTimes[2] <- isotime[which.min(abs(udtime - tposLim[2]))]
 
 myURL <- buildURL(dataStruct, erddapLons, erddapLats, erddapTimes)

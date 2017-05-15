@@ -4,6 +4,7 @@
 * Changed searchData() to use a simple list with text strings of the form searchType:searchText
 * Corrected searchData() for case where there are no matches
 * searchData() and getInfo() now return results using View().
+* Modified encoding of urls to work with newer versions of Apache Tomcat.
 
 
 

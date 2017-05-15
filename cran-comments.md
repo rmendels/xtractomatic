@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.3.2
+* local OS X install, R 3.4.0
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -16,20 +16,16 @@ Possibly mis-spelled words in DESCRIPTION:
 
 Everythng above is correct.
 
-** running examples for arch 'i386' ... [36s] OK
-Examples with CPU or elapsed time > 5s
+** running examples for arch 'i386' ... [81s] NOTE
+Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    1.74   0.24   10.88
-xtractogon 1.19   0.00    7.16
-xtracto_3D 0.69   0.03    8.73
-searchData 0.02   0.00    5.96
-** running examples for arch 'x64' ... [33s] OK
-Examples with CPU or elapsed time > 5s
+xtracto    2.37   0.16   10.17
+xtracto_3D 1.01   0.11   59.14
+** running examples for arch 'x64' ... [51s] NOTE
+Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    1.66   0.28   10.87
-xtractogon 1.01   0.02    6.88
-xtracto_3D 0.64   0.02    7.47
-searchData 0.04   0.00    5.43
+xtracto    3.64   0.24   12.21
+xtracto_3D 0.76   0.17   27.58
 
 What this package does is download data from a remote server.  I have cut down the examples significantly from my previous attempt for this version, but wanted to leave at least one running test that reflected what the scripts do.  I have gotten the times close to 10s.  The times will vary based on the speed of the test machine internet and how busy our server is, which is often busy.  The times I get from home are faster than what you get on the CRAN computers.
 
@@ -44,14 +40,16 @@ Possibly mis-spelled words in DESCRIPTION:
   
 Everythng above is correct.
 
-** running examples for arch 'i386' ... [30s] NOTE
+** running examples for arch 'i386' ... [48s] NOTE
 Examples with CPU or elapsed time > 10s
-        user system elapsed
-xtracto 2.87    0.2   10.17
-** running examples for arch 'x64' ... [30s] NOTE
+           user system elapsed
+xtracto    2.87   0.13   10.63
+xtracto_3D 1.06   0.07   23.79
+** running examples for arch 'x64' ... [68s] NOTE
 Examples with CPU or elapsed time > 10s
-        user system elapsed
-xtracto  3.2   0.25   10.98
+           user system elapsed
+xtracto    3.17   0.24   10.57
+xtracto_3D 0.97   0.14   42.20
 
 See comment above about the timings.
 

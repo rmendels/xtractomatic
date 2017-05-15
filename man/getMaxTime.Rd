@@ -39,4 +39,3 @@ Extract dataset information for a given dtype name or number
 \keyword{updated}
 \keyword{urlbase}
 \keyword{with}
-

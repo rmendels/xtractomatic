@@ -43,8 +43,7 @@ information about any dataset that matches the string:
 \item infoUrl
  }
 }
+
 \examples{
 getInfo('atsstamday')
-getInfo(7)
 }
-

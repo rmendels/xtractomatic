@@ -42,4 +42,3 @@ Check Coordinate Dimensions
 \keyword{the}
 \keyword{time}
 \keyword{within}
-

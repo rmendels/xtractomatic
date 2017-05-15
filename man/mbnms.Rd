@@ -20,4 +20,3 @@ A dataset containing the latitudes and longitudes of a polygon that define
  boundaries of the Monterey Bay National Marine Sanctuary.
 }
 \keyword{datasets}
-

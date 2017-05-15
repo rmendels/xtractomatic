@@ -24,4 +24,3 @@ Marlintag38606
 Telemetry data of a blue marlin tagged in the Pacific Ocean in 2003
 }
 \keyword{datasets}
-

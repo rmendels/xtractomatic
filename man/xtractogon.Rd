@@ -41,10 +41,10 @@ latitudes and longitudes
  the polygon, and then uses the function "point.in.polygon" from the "sp"
  package to mask out the areas outside of the polygon.
 }
+
 \examples{
 tpos <- c("2014-09-01", "2014-10-01")
 xpos <- mbnms$Longitude
 ypos <- mbnms$Latitude
-sanctchl <- xtractogon(xpos, ypos, tpos, 'erdVH2chlamday')
+sanctchl <- xtractogon(xpos, ypos, tpos, 'erdVH3chlamday')
 }
-

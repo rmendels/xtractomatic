@@ -78,4 +78,3 @@ retrieve ETOPO Bathymetry Data along a track
 \keyword{xrad}
 \keyword{ypos}
 \keyword{yrad}
-

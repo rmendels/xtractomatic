@@ -32,4 +32,3 @@ Get Cooordinate  (Dimension) Data from ERDDAP Dataset
 \keyword{that}
 \keyword{the}
 \keyword{variables}
-

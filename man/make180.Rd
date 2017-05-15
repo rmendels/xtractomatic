@@ -30,4 +30,3 @@ Convert Longitudes to (-180,180)
 \keyword{that}
 \keyword{to}
 \keyword{vector}
-

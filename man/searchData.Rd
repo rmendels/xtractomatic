@@ -11,7 +11,7 @@ searchData(searchList = list(list("varname", "chl")))
 each list will contain the field to search and the search string}
 }
 \value{
-prints out any matching information
+dataframe with any matching information
 }
 \description{
 \code{searchData} finds the all datasets that contain the supplied string
@@ -48,10 +48,10 @@ information about any dataset that matches the string:
 \item infoUrl
  }
 }
-\examples{
-list1 <- list('varname', 'chl')
-list2 <- list('datasetname', 'mday')
-mylist <- list(list1, list2)
-searchData(mylist)
-}
 
+\examples{
+list1 <- 'varname:chl'
+list2 <- 'datasetname:mday'
+mylist <- c(list1, list2)
+searchResult <- searchData(mylist)
+}

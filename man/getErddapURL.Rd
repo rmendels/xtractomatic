@@ -29,4 +29,3 @@ Download Data using an ERDDAP URL
 \keyword{request}
 \keyword{the}
 \keyword{to}
-

@@ -7,7 +7,6 @@
 #' @return prints out dataset information
 #' @examples
 #' getInfo('atsstamday')
-#' getInfo(7)
 #' @section Details:
 #' getInfo gives the dataset information for the given dataset. This includes:
 #' dtypename,datasetname,longname,varname.  It will return the following
@@ -60,7 +59,7 @@ getInfo <- function(dtype) {
    outFrame$maxTime <- as.character(outFrame$maxTime)
    outFrame$timeSpacing <- as.numeric(outFrame$timeSpacing)/86400.
    #print(dataStruct$dtypename)
-   str(outFrame)
+   utils::str(outFrame)
    #cat("\n")
    #View(outFrame)
    #DT::datatable(outFrame)

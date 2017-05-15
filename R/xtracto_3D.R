@@ -24,7 +24,7 @@
 #' @examples
 #' xpos <- c(230, 240)
 #' ypos <- c(40, 45)
-#' tpos <- c('2006-05-05', '2006-06-21')
+#' tpos <- c('2006-05-05', '2006-05-08')
 #' extract <- xtracto_3D(xpos, ypos, tpos, 'erdMBsstd8day')
 #' \donttest{
 #' extract <- xtracto_3D(xpos, ypos, tpos, 'erdMBsstd8day', verbose=TRUE)

@@ -16,16 +16,17 @@ Possibly mis-spelled words in DESCRIPTION:
 
 Everythng above is correct.
 
-** running examples for arch 'i386' ... [81s] NOTE
+** running examples for arch 'i386' ... [43s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    2.37   0.16   10.17
-xtracto_3D 1.01   0.11   59.14
-** running examples for arch 'x64' ... [51s] NOTE
+xtracto    2.99   0.16   16.22
+xtractogon 1.44   0.10   10.69
+xtracto_3D 0.92   0.04   10.81
+** running examples for arch 'x64' ... [41s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    3.64   0.24   12.21
-xtracto_3D 0.76   0.17   27.58
+xtracto    2.91   0.19   11.94
+xtracto_3D 0.71   0.00   17.25
 
 What this package does is download data from a remote server.  I have cut down the examples significantly from my previous attempt for this version, but wanted to leave at least one running test that reflected what the scripts do.  I have gotten the times close to 10s.  The times will vary based on the speed of the test machine internet and how busy our server is, which is often busy.  The times I get from home are faster than what you get on the CRAN computers.
 
@@ -40,16 +41,17 @@ Possibly mis-spelled words in DESCRIPTION:
   
 Everythng above is correct.
 
-** running examples for arch 'i386' ... [48s] NOTE
+** running examples for arch 'i386' ... [36s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    2.87   0.13   10.63
-xtracto_3D 1.06   0.07   23.79
-** running examples for arch 'x64' ... [68s] NOTE
+xtracto    2.67   0.19   10.92
+xtracto_3D 0.76   0.00   13.13
+** running examples for arch 'x64' ... [37s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    3.17   0.24   10.57
-xtracto_3D 0.97   0.14   42.20
+xtracto    3.05   0.22   10.31
+xtractogon 1.12   0.01   10.14
+xtracto_3D 0.65   0.00   11.03
 
 See comment above about the timings.
 

@@ -16,19 +16,18 @@ Possibly mis-spelled words in DESCRIPTION:
 
 Everythng above is correct.
 
-** running examples for arch 'i386' ... [43s] NOTE
+** running examples for arch 'i386' ... [48s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    2.99   0.16   16.22
-xtractogon 1.44   0.10   10.69
-xtracto_3D 0.92   0.04   10.81
-** running examples for arch 'x64' ... [41s] NOTE
+xtracto    3.36   0.22   22.64
+xtracto_3D 0.85   0.01   10.19
+** running examples for arch 'x64' ... [43s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    2.91   0.19   11.94
-xtracto_3D 0.71   0.00   17.25
+xtracto    3.39   0.35   15.46
+xtracto_3D 0.81   0.00   11.60
 
-What this package does is download data from a remote server.  I have cut down the examples significantly from my previous attempt for this version, but wanted to leave at least one running test that reflected what the scripts do.  I have gotten the times close to 10s.  The times will vary based on the speed of the test machine internet and how busy our server is, which is often busy.  The times I get from home are faster than what you get on the CRAN computers.
+What this package does is download data from a remote server.  I have cut down the examples even more significantly from my previous attempt for this version, but wanted to leave at least one running test that reflected what the scripts do.  I have gotten the times close to 10s.  The times will vary based on the speed of the test machine internet and how busy our server is, which is often busy.  The times I get from home are faster than what you get on the CRAN computers, I get even the slowest at 6sec - 7sec.
 
 There were 3 NOTEs from win-builder-devel:
 
@@ -41,17 +40,16 @@ Possibly mis-spelled words in DESCRIPTION:
   
 Everythng above is correct.
 
-** running examples for arch 'i386' ... [36s] NOTE
+** running examples for arch 'i386' ... [40s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    2.67   0.19   10.92
-xtracto_3D 0.76   0.00   13.13
-** running examples for arch 'x64' ... [37s] NOTE
+xtracto    3.17   0.29   14.07
+xtracto_3D 0.86   0.04   11.27
+** running examples for arch 'x64' ... [46s] NOTE
 Examples with CPU or elapsed time > 10s
            user system elapsed
-xtracto    3.05   0.22   10.31
-xtractogon 1.12   0.01   10.14
-xtracto_3D 0.65   0.00   11.03
+xtracto    3.40   0.30   15.63
+xtractogon 1.34   0.03   11.61
 
 See comment above about the timings.
 

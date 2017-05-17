@@ -844,7 +844,7 @@ xpos <- c(238, 243)
 ypos <- c(30, 35)
 for (year in 2009:2014) {
   tpos <- rep(paste(year, '-12-20', sep = ""), 2)
-  tmp <- xtracto_3D(xpos, ypos, tpos, 'jplMURSST41')
+  tmp <- xtracto_3D(xpos, ypos, tpos, 'jplMURSST41SST')
 #ggplot is sensitve that the grid is absolutely regular
   tmp$latitude <- seq(range(tmp$latitude)[1], range(tmp$latitude)[2], length.out = length(tmp$latitude))
   tmp$longitude <- seq(range(tmp$longitude)[1], range(tmp$longitude)[2], length.out = length(tmp$longitude))  

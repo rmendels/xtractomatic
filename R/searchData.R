@@ -8,8 +8,8 @@
 #'
 #' @return dataframe with any matching information
 #' @examples
-#' list1 <- 'varname:chl'
-#' list2 <- 'datasetname:mday'
+#' list1 <- 'varname:x_wind'
+#' list2 <- 'datasetname:8day'
 #' mylist <- c(list1, list2)
 #' searchResult <- searchData(mylist)
 #' @section Details:

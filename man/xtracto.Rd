@@ -48,8 +48,8 @@ data along a longitude, latitude and time trajectory
 xpos <- c(230, 235)
 ypos <- c(40, 45)
 tpos <- c('2006-01-15', '2006-01-20')
-xlen <- 0.5
-ylen <- 0.5
+xlen <- 0.2
+ylen <- 0.2
 extract <- xtracto(xpos, ypos, tpos, 'erdMBsstd8day', xlen, ylen)
 \donttest{
 extract <- xtracto(xpos, ypos,tpos, 'erdMBsstd8day', xlen, ylen, verbose = TRUE)

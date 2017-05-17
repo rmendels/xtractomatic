@@ -1,3 +1,6 @@
+# xtractomatic 3.3.1
+Changed examples to run faster on CRAN machines.
+
 # xtractomatic 3.3.0
 
 * Changed the organization of the underlying erddapStruct that contains dataset information, removed outdated datasets.

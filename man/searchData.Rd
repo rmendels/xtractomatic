@@ -50,8 +50,8 @@ information about any dataset that matches the string:
 }
 
 \examples{
-list1 <- 'varname:chl'
-list2 <- 'datasetname:mday'
+list1 <- 'varname:x_wind'
+list2 <- 'datasetname:8day'
 mylist <- c(list1, list2)
 searchResult <- searchData(mylist)
 }

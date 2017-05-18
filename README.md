@@ -1,7 +1,7 @@
 # xtractomatic
 xtractomatic R package for accessing environmental data
 
-***Version 3.3.1 Released ****
+***Version 3.3.2 Released ****
 - Fixes problem with newer versions of Apache Tomcat handling of special characters in URLS
 - dtype as number no longer allowed
 - searchData() now takes a list of objects of the form "searchType:searchString"

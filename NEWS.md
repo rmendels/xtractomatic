@@ -1,4 +1,9 @@
+# xtractomatic 3.3.2
+
+added back in ncdcOisst2Agg dataset
+
 # xtractomatic 3.3.1
+
 Changed examples to run faster on CRAN machines.
 
 # xtractomatic 3.3.0

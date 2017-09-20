@@ -152,6 +152,9 @@ datatime <- ncdf4::ncvar_get(datafileID, varid="time")
 datatime <- as.Date(as.POSIXlt(datatime, origin='1970-01-01', tz= "GMT"))
 
 param <- ncdf4::ncvar_get(datafileID, varid=varname)
+if (erddapTimes[1] == erddapTimes[2]) {
+  param <- array(param, c(dim(param), 1))
+}
 
 ncdf4::nc_close(datafileID)
 #  put longitudes back on the requestors scale

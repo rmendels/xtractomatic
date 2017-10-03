@@ -22,6 +22,14 @@ polygon through time.
  }
 }
 
+\section{Plotting Functions}{
+
+\itemize{
+\item \code{plotTrack} - Plots the results of a call to `xtracto()`
+\item \code{plotBBox} - Plots the results of a call to `xtracto_3D()` and `xtractogon()`
+ }
+}
+
 \section{Helper Functions}{
 
  \itemize{

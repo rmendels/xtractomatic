@@ -1,31 +1,38 @@
 # xtractomatic
 xtractomatic R package for accessing environmental data
 
-***Version 3.3.2 Released ****
-- Fixes problem with newer versions of Apache Tomcat handling of special characters in URLS
-- dtype as number no longer allowed
-- searchData() now takes a list of objects of the form "searchType:searchString"
-- new datasets added
-- inactive or out of date datasets removed
+***Version 3.4.0 Available for Testing ****
+- Changes to the order of the function arguments and required and option arguments in the functions.
 
+- Simple plot routines that mostly just need the result from an extract.
+
+- See vignette for the development versions for lots of examples - https://https://rmendels.github.io/Usingxtractomatic_Dev.nb.html
 
 `xtractomatic` is an <span style="color:blue">R</span> package developed to subset and extract satellite and other oceanographic related data from a remote server. The program can extract data for a moving point in time along a user-supplied set of longitude, latitude and time points; in a 3D bounding box; or within a polygon (through time).  The `xtractomatic` functions were originally developed for the marine biology tagging community, to match up environmental data available from satellites (sea-surface temperature, sea-surface chlorophyll, sea-surface height, sea-surface salinity, vector winds) to track data from various tagged animals or shiptracks (`xtracto`). The package has since been extended to include the routines that extract data a 3D bounding box (`xtracto_3D`) or within a polygon (`xtractogon`).  The `xtractomatic`  package accesses  data that are served through the <span style="color:blue">ERDDAP</span> (Environmental Research Division Data Access Program) server at the NOAA/SWFSC Environmental Research Division in Santa Cruz, California. The <span style="color:blue">ERDDAP</span> server can also be directly accessed at <http://coastwatch.pfeg.noaa.gov/erddap>. <span style="color:blue">ERDDAP</span> is a simple to use yet powerful web data service developed by Bob Simons.  
 
 
 There are three main data extraction functions in the `xtractomatic` package: 
 
-- `xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose=FALSE)`
+- `xtracto <- function(dtype, xpos, ypos, tpos = NA, xlen = 0., ylen = 0., verbose=FALSE)`
 
-- `xtracto_3D <- function(xpos, ypos, tpos, dtype, verbose=FALSE)`
+- `xtracto_3D <- function(dtype, xpos, ypos, tpos = NA, verbose=FALSE)`
 
-- `xtractogon <- function(xpos, ypos, tpos, dtype, verbose=FALSE)`
+- `xtractogon <- function(dtype, xpos, ypos, tpos = NA,  verbose = FALSE)`
 
 
-There also are two information functions in the `xtractomatic` package: 
+There are two information functions in the `xtractomatic` package: 
 
-- `searchData <- function(searchList=list(list("varname","chl"))) ` 
+- `searchData <- function(searchList= "varname:chl")  
 
 - `getInfo <- function(dtype)`
+
+There are now two plotting functions that make use of the <span style="color:red">R</span> package `plotdap`:
+
+- `plotTrack <- function(resp, xcoord, ycoord, plotColor = 'viridis', name = NA, myFunc = NA, shape = 20, size = .5)`
+
+- `plotBBox <- function(resp, plotColor = 'viridis', time = NA, animate = FALSE, name = NA, myFunc = NA, maxpixels = 10000)`
+
+The `dtype` parameter in the data extraction routines specifies a combination of which dataset on the <span style="color:red">ERDDAP</span> server to access, and as well as which parameter from that dataset. The first sections demonstrate how to use these functions in realistic settings. The [Selecting a dataset](#dataset) section shows how to find the `dtype` or other parameters of interest from the available datasets.
 
 `xtractomatic` uses the `httr`, `ncdf4` and `sp` packages , and these packages (and the packages imported by these packages) must be installed first or `xtractomatic` will fail to install.   
 
@@ -35,19 +42,27 @@ install.packages("ncdf4")
 install.packages("sp")
 ```
 
-The `xtractomatic` package is available from <span style="color:blue">CRAN</span> and can be installed by:
-
-```{r installCRAN,eval=FALSE}
-install.packages("xtractomatic")
-```
-
-
-or the development version is available from [Github](https://github.com/rmendels/xtractomatic and can be installed from <span style="color:blue">Github</span>,
+This development version of `xtractomatic` is available from https://github.com/rmendels/xtractomatic and can be installed from <span style="color:red">Github</span>,
 
 ```{r installGit,eval=FALSE}
 install.packages("devtools")
 devtools::install_github("rmendels/xtractomatic")
 ```
+
+In order to use the plot routines,  you must have the package `plotdap` installed, as well as all of its dependencies,  most importantly `rerddap` and `sf` (but note these are only needed if you are using the plotting routines.   The latter two can be installed from CRAN:
+
+```{r ,eval=FALSE}
+install.packages("rerddap", dependencies = TRUE)
+install.packages("sf", dependencies = TRUE)
+```
+
+The `plotdap` package can be installed from <span style="color:red">Github</span>:
+
+```{r ,eval=FALSE}
+install.packages("devtools")
+devtools::install_github('ropensci/plotdap', dependencies = TRUE)
+```
+
 
 The vignette provides a lot of examples of using `xtractomatic`, and it is not built by default by `devtools`.
 
@@ -70,7 +85,6 @@ The Vignette examples require the following packages and will not build if they 
 
 
 Note however, that the Vignette generates graphics by doing a large number of downloads using `xtractomatic`, and the build may fail if the server is busy or your internet line is slow.
-If you can not get the Vignette to build, a pdf version can be downloaded from http://coastwatch.pfeg.noaa.gov/xtracto or email me at roy.mendelssohn@noaa.gov.
 
 
 # Required legalese

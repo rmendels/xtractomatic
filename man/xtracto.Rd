@@ -4,25 +4,26 @@
 \alias{xtracto}
 \title{Extract environmental data along a trajectory using ERDDAP.}
 \usage{
-xtracto(xpos, ypos, tpos, dtype, xlen, ylen, verbose = FALSE)
+xtracto(dtype, xpos, ypos, tpos = NA, xlen = 0, ylen = 0,
+  verbose = FALSE)
 }
 \arguments{
+\item{dtype}{- number or string identfying the ERDDAP parameter to extract}
+
 \item{xpos}{- a real array with the longitudes of the trajectory (in decimal
 degrees East, either 0-360 or -180 to 180)}
 
 \item{ypos}{-  a real array with the latitudes of the trajectory (in decimal
 degrees N; -90 to 90)}
 
-\item{tpos}{- a character array with the times of the trajectory in
-"YYYY-MM-DD"}
+\item{tpos}{- character array with the times of the trajectory in
+"YYYY-MM-DD". Default is NA for no time.}
 
-\item{dtype}{- number or string identfying the ERDDAP parameter to extract}
+\item{xlen}{- optional real array defining the longitude box around the given point (xlen/2 around the point).  Default 0.}
 
-\item{xlen}{- real array defining the longitude box around the given point (xlen/2 around the point)}
+\item{ylen}{- optional real array defining the latitude box around the given point (tlen/2 around the point). Default 0.}
 
-\item{ylen}{- real array defining the latitude box around the given point (tlen/2 around the point)}
-
-\item{verbose}{- logical for verbose download out, default FALSE}
+\item{verbose}{- optional logical for verbose download out, default FALSE}
 }
 \value{
 A dataframe containing:
@@ -50,9 +51,9 @@ ypos <- c(40, 45)
 tpos <- c('2006-01-15', '2006-01-20')
 xlen <- 0.2
 ylen <- 0.2
-extract <- xtracto(xpos, ypos, tpos, 'erdMBsstd8day', xlen, ylen)
+extract <- xtracto('erdMBsstd8day', xpos, ypos, tpos = tpos, xlen = xlen, ylen = ylen)
 \donttest{
-extract <- xtracto(xpos, ypos,tpos, 'erdMBsstd8day', xlen, ylen, verbose = TRUE)
+extract <- xtracto('erdMBsstd8day', xpos, ypos, tpos = tpos, xlen = xlen, ylen = ylen, verbose = TRUE)
 }
 
 }

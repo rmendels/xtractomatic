@@ -1,3 +1,8 @@
+# xtractomatic 3.4.0
+
+- Major refactoring,  order of the call has been changed
+- Added plotting functions `plotTrack()` and `plotBBox()`
+
 # xtractomatic 3.3.2
 
 added back in ncdcOisst2Agg dataset

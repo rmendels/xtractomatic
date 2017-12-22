@@ -72,7 +72,7 @@ This development version of `xtractomatic` is available from https://github.com/
 
 ```{r installGit,eval=FALSE}
 install.packages("devtools")
-devtools::install_github("rmendels/xtractomatic/tree/development")
+devtools::install_github("rmendels/xtractomatic", ref = "development")
 ```
 
 In order to use the plot routines,  you must have the package `plotdap` installed, as well as all of its dependencies,  most importantly `rerddap` and `sf` (but note these are only needed if you are using the plotting routines.   The latter two can be installed from CRAN:

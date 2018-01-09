@@ -21,7 +21,7 @@ in the given dataset field
 
 searchData will search for the given string in any of the fields
 dtypename,datasetname,longname,varname.  Over the list of
-searchs provided, the search sequentially refines
+searches provided, the search sequentially refines
 the search result based on the next list in the list of lists.
 
 It will return the following

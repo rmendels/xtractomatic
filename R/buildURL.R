@@ -21,19 +21,24 @@ buildURL <- function(dataStruct, lonBounds, latBounds, timeBounds, urlbase="http
   datasetname <- dataStruct$datasetname
   varname <- dataStruct$varname
 
-  # text string for data retrieval call
+  myURL <- paste0(urlbase, datasetname, '.nc?', varname)
+  query <- ""
+  if (!is.na(dataStruct$minTime)) {
+    time1 <- timeBounds[1]
+    time2 <- timeBounds[2]
+    timeArg <- paste0('[(', time1, '):1:(', time2, ')]')
+    query <- paste0(query, timeArg)
+  }
   if (hasAltitude) {
     altitude <- dataStruct$minAltitude
-    altitudeBound <- paste('[(', as.character(altitude), '):1:(', as.character(altitude), ')]', sep="")
-    myURL <- paste(urlbase, datasetname, '.nc?', varname, '[(', time1, '):1:(', time2, ')]',
-                altitudeBound,
-                '[(', lat1, '):1:(', lat2, ')]',
-                '[(', lon1, '):1:(', lon2, ')]', sep="")
-  } else {
-    myURL <- paste(urlbase, datasetname, '.nc?', varname, '[(', time1, '):1:(', time2, ')]',
-                '[(', lat1, '):1:(', lat2, ')]',
-                '[(', lon1, '):1:(', lon2, ')]', sep="")
+    altArg <- paste0('[(', as.character(altitude), '):1:(', as.character(altitude), ')]')
+    query <- paste0(query, altArg)
   }
+  latArg <- paste0('[(', lat1, '):1:(', lat2, ')]')
+  query <- paste0(query, latArg)
+  lonArg <- paste0('[(', lon1, '):1:(', lon2, ')]')
+  query <- paste0(query, lonArg)
+  myURL <- paste0(myURL, query)
 
   return(myURL)
 

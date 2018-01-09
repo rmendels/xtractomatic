@@ -4,9 +4,11 @@
 \alias{xtracto_3D}
 \title{Extract environmental data in a 3-D bounding box using ERDDAP.}
 \usage{
-xtracto_3D(xpos, ypos, tpos, dtype, verbose = FALSE)
+xtracto_3D(dtype, xpos, ypos, tpos = NA, verbose = FALSE)
 }
 \arguments{
+\item{dtype}{- number or string identifying the ERDDAP parameter to extract}
+
 \item{xpos}{- 2-element array giving min and max longitude (in decimal
 degrees East, either 0-360 or -180 to 180)}
 
@@ -14,16 +16,14 @@ degrees East, either 0-360 or -180 to 180)}
 degrees N; -90 to 90)}
 
 \item{tpos}{- 2-element array giving min and max time (specify both minimum
-and maximum dates). For the last available time, use "last".}
-
-\item{dtype}{- number or string identfying the ERDDAP parameter to extract}
+and maximum dates). For the last available time, use "last". Default NA.}
 
 \item{verbose}{- logical for verbose download output, default FALSE}
 }
 \value{
 structure with data and dimensions:
 \itemize{
-  \item extract$data - the data array dimensioned (lon,lat,time)
+  \item extract$data - the data array dimensions (lon,lat,time)
   \item extract$varname - the name of the parameter extracted
   \item extract$datasetname - ERDDAP dataset name
   \item extract$longitude - the longitudes on some scale as request
@@ -36,11 +36,14 @@ structure with data and dimensions:
 environmental data in a given longitude, latitude and time bounding box
 }
 \examples{
+xpos <- c(-130., -115.)
+ypos <- c(30., 40.)
+tpos <- c('2015-01-16', '2015-02-16')
+extract <- xtracto_3D('mhsstdmday', xpos, ypos, tpos = tpos)
+\donttest{
 xpos <- c(230, 231)
 ypos <- c(40, 41)
 tpos <- c('2006-05-05', '2006-05-06')
-extract <- xtracto_3D(xpos, ypos, tpos, 'ncdcOisst2Agg')
-\donttest{
-extract <- xtracto_3D(xpos, ypos, tpos, 'erdMBsstd8day', verbose=TRUE)
+extract <- xtracto_3D('erdMBsstd8day', xpos, ypos, tpos = tpos, verbose=TRUE)
 }
 }

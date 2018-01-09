@@ -14,11 +14,19 @@ functions and two helper functions.
 
 \itemize{
 \item \code{xtracto} - Extracts an environmental variable along a track defined by
- its longtiude, latitude and time.
+ its longitude, latitude and time.
 \item \code{xtracto_3D} - Extracts an environmental variable in a
 3D  (longitude,latitude, time) bounding box
 \item \code{xtractogon} - Extracts an environmental variable in a spatial
 polygon through time.
+ }
+}
+
+\section{Plotting Functions}{
+
+\itemize{
+\item \code{plotTrack} - Plots the results of a call to `xtracto()`
+\item \code{plotBBox} - Plots the results of a call to `xtracto_3D()` and `xtractogon()`
  }
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getFIleCoords.R
 \name{getfileCoords}
 \alias{getfileCoords}
-\title{Get Cooordinate  (Dimension) Data from ERDDAP Dataset}
+\title{Get Coordinate  (Dimension) Data from ERDDAP Dataset}
 \usage{
 getfileCoords(dataStruct,
   urlbase = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/")
@@ -16,7 +16,7 @@ getfileCoords(dataStruct,
 A list containing the values of the coordinate variables
 }
 \description{
-Get Cooordinate  (Dimension) Data from ERDDAP Dataset
+Get Coordinate  (Dimension) Data from ERDDAP Dataset
 }
 \keyword{(dimension)}
 \keyword{\code{getFileCoords}}

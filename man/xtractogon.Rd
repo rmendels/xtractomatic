@@ -4,25 +4,26 @@
 \alias{xtractogon}
 \title{Extract environmental data in a polygon using ERDDAP.}
 \usage{
-xtractogon(xpos, ypos, tpos, dtype, verbose = FALSE)
+xtractogon(dtype, xpos, ypos, tpos = NA, verbose = FALSE)
 }
 \arguments{
+\item{dtype}{- number or string identifying the ERDDAP parameter to extract}
+
 \item{xpos}{- array giving longitudes (in decimal
 degrees East, either 0-360 or -180 to 180) of polygon}
 
 \item{ypos}{-  array giving latitudes (in decimal
 degrees N; -90 to 90)of polygon}
 
-\item{tpos}{- 2-array of minimum and maximum times as 'YYYY-MM-DD'}
-
-\item{dtype}{- number or string identfying the ERDDAP parameter to extract}
+\item{tpos}{- 2-element array giving min and max time (specify both minimum
+and maximum dates). For the last available time, use "last". Default NA.}
 
 \item{verbose}{- logical for verbose download out, default FALSE}
 }
 \value{
 structure with data and dimensions
 \itemize{
-  \item extract$data - the masked data array dimensioned (lon,lat,time)
+  \item extract$data - the masked data array dimensions (lon,lat,time)
   \item extract$varname - the name of the parameter extracted
   \item extract$datasetname - ERDDAP dataset name
   \item extract$longitude - the longitudes on some scale as request
@@ -46,5 +47,5 @@ latitudes and longitudes
 tpos <- c("2014-09-01", "2014-10-01")
 xpos <- mbnms$Longitude
 ypos <- mbnms$Latitude
-sanctchl <- xtractogon(xpos, ypos, tpos, 'erdVH3chlamday')
+sanctchl <- xtractogon('erdVH3chlamday', xpos, ypos, tpos = tpos )
 }

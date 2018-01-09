@@ -3,16 +3,16 @@
 #' \code{xtracto} uses the ERD ERDDAP data web service to extact environmental
 #' data along a longitude, latitude and time trajectory
 #' @export
+#' @param dtype - number or string identifying the ERDDAP parameter to extract
 #' @param xpos - a real array with the longitudes of the trajectory (in decimal
 #'   degrees East, either 0-360 or -180 to 180)
 #' @param ypos -  a real array with the latitudes of the trajectory (in decimal
 #'   degrees N; -90 to 90)
-#' @param tpos - a character array with the times of the trajectory in
-#'   "YYYY-MM-DD"
-#' @param dtype - number or string identfying the ERDDAP parameter to extract
-#' @param xlen - real array defining the longitude box around the given point (xlen/2 around the point)
-#' @param ylen - real array defining the latitude box around the given point (tlen/2 around the point)
-#' @param verbose - logical for verbose download out, default FALSE
+#' @param tpos - character array with the times of the trajectory in
+#'   "YYYY-MM-DD". Default is NA for no time.
+#' @param xlen - optional real array defining the longitude box around the given point (xlen/2 around the point).  Default 0.
+#' @param ylen - optional real array defining the latitude box around the given point (tlen/2 around the point). Default 0.
+#' @param verbose - optional logical for verbose download out, default FALSE
 #' @return A dataframe containing:
 #' \itemize{
 #'  \item column 1 = mean of data within search radius
@@ -33,17 +33,18 @@
 #' tpos <- c('2006-01-15', '2006-01-20')
 #' xlen <- 0.2
 #' ylen <- 0.2
-#' extract <- xtracto(xpos, ypos, tpos, 'erdMBsstd8day', xlen, ylen)
-#' \donttest{
-#' extract <- xtracto(xpos, ypos,tpos, 'erdMBsstd8day', xlen, ylen, verbose = TRUE)
-#' }
+#' extract <- xtracto('erdMBsstd8day', xpos, ypos, tpos = tpos, xlen = xlen, ylen = ylen)
 #'
 
 
 
 
-xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose=FALSE){
-  # default URL for NMFS/SWFSC/ERD  ERDDAP server
+xtracto <- function(dtype, xpos, ypos, tpos = NA, xlen = 0., ylen = 0., verbose=FALSE){
+  # assume time isn't need,  make length 2 for test.  Check later
+  if (is.na(tpos[1])) {
+    tpos <- array(NA, dim = length(xpos))
+  }
+    # default URL for NMFS/SWFSC/ERD  ERDDAP server
   urlbase <- 'https://coastwatch.pfeg.noaa.gov/erddap/griddap/'
   urlbase1 <- 'https://coastwatch.pfeg.noaa.gov/erddap/tabledap/allDatasets.csv?'
   lengthXpos <- length(xpos)
@@ -67,6 +68,24 @@ xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose=FALSE){
     stop('no matching dataset found')
   }
   dataStruct <- erddapStruct[[dtype]]
+  # check that dataset is available
+  myURL <- paste(urlbase1,'datasetID&datasetID="', dataStruct$datasetname, '"', sep = "")
+  r1 = httr::GET(utils::URLencode(myURL))
+  requestStatus <- httr::status_code(r1)
+  if (!(requestStatus == 200)) {
+    stop('requested dataset not available at present - try again later')
+  }
+
+  # abort if times are missing and dataset require times
+  hasTime <- !is.na(dataStruct$minTime)
+  if (hasTime && is.na(tpos[1])) {
+    stop('time is not given,  dataset has time dimension')
+  }
+  # take care of case where times are given but dataset doesn't have times
+  if (!hasTime) {
+    tpos <- array(NA, dim = length(xpos))
+  }
+  hasAltitude <- dataStruct$hasAlt
 
   #reconcile longitude grids
   xpos1 <- xpos
@@ -85,21 +104,15 @@ xtracto <- function(xpos, ypos, tpos, dtype, xlen, ylen, verbose=FALSE){
     yrad <- ylen
   }
 
-  # Bathymetry is a special case lets get it out of the way
-  if (dataStruct$datasetname == "etopo360" || dataStruct$datasetname == "etopo180") {
-    result <- getETOPOtrack(dataStruct,xpos1,ypos,xrad,yrad,verbose)
-    if (result$returnCode == -1){
-      stop ('error in getting ETOPO data - see error messages')
-    } else {
-      return(result$out.dataframe)
-    }
-  }
-dataStruct <- getMaxTime(dataStruct)
+  tposLim <- c(NA, NA)
+  if (!is.na(tpos[1])) {
+    dataStruct <- getMaxTime(dataStruct)
+    udtpos <- as.Date(tpos,origin = '1970-01-01',tz = "GMT")
+    tposLim <- c(min(udtpos), max(udtpos))
+}
 
-udtpos <- as.Date(tpos,origin='1970-01-01',tz= "GMT")
 xposLim <- c(min(xpos1 - (xrad/2)), max(xpos1 + (xrad/2)))
 yposLim <- c(min(ypos - (yrad/2)), max(ypos + (yrad/2)))
-tposLim <- c(min(udtpos), max(udtpos))
 
 #check that coordinate bounds are contained in the dataset
 
@@ -114,13 +127,12 @@ dataCoordList <- getfileCoords(dataStruct)
 if (!is.list(dataCoordList)) {
   stop("Error retrieving coordinate variable")
 }
-isotime <- dataCoordList[[1]]
-udtime <- dataCoordList[[2]]
-latitude <- dataCoordList[[3]]
-longitude <- dataCoordList[[4]]
-if (dataStruct$hasAlt) {
-  altitude <- dataCoordList[[5]]
-}
+isotime <- dataCoordList[["isotime"]]
+udtime <- dataCoordList[["udtime"]]
+latitude <- dataCoordList[["latitude"]]
+longitude <- dataCoordList[["longitude"]]
+altitude <- dataCoordList[["altitude"]]
+
 
 #create structures to store last request in case it is the same
 out.dataframe <- as.data.frame(matrix(ncol = 11,nrow = length(xpos)))
@@ -154,7 +166,10 @@ for (i in 1:length(xpos1)) {
    newLatIndex[2] <- which.min(abs(latitude - ymax))
    newLonIndex[1] <- which.min(abs(longitude - xmin))
    newLonIndex[2] <- which.min(abs(longitude - xmax))
-   newTimeIndex[1] <- which.min(abs(udtime - udtpos[i]))
+   newTimeIndex <- c(NA, NA)
+   if (!is.na(tpos[1])) {
+     newTimeIndex[1] <- which.min(abs(udtime - udtpos[i]))
+    }
 
    if (identical(newLatIndex, oldLatIndex) && identical(newLonIndex, oldLonIndex) && identical(newTimeIndex[1], oldTimeIndex[1])) {
      # the call will be the same as last time, so no need to repeat
@@ -167,9 +182,12 @@ for (i in 1:length(xpos1)) {
      erddapLats[2] <- latitude[newLatIndex[2]]
      erddapLons[1] <- longitude[newLonIndex[1]]
      erddapLons[2] <- longitude[newLonIndex[2]]
+     erddapTimes <- c(NA, NA)
      requesttime <- isotime[newTimeIndex[1]]
-     erddapTimes[1] <- requesttime
-     erddapTimes[2] <- requesttime
+     if (!is.na(tpos[1])) {
+       erddapTimes[1] <- requesttime
+       erddapTimes[2] <- requesttime
+     }
 
      myURL <- buildURL(dataStruct, erddapLons, erddapLats, erddapTimes)
      #Download the data from the website to the current R directory
@@ -177,7 +195,9 @@ for (i in 1:length(xpos1)) {
      downloadReturn <- getErddapURL(myURL, fileout, verbose)
      if (downloadReturn != 0) {
        print(myURL)
-       stop("There was an error in the url call.  See message on screen and URL called")
+       print("There was an error in the url call.  See message on screen and URL called")
+       print("Returning incomplete download")
+       return(out.dataframe)
      }
 
 
@@ -200,17 +220,17 @@ for (i in 1:length(xpos1)) {
       xmax <- make180(xmax)
     }
 
-     out.dataframe[i, 1] <- mean(paramdata, na.rm=T)
-     out.dataframe[i, 2] <- stats::sd(paramdata, na.rm=T)
+     out.dataframe[i, 1] <- mean(paramdata, na.rm = T)
+     out.dataframe[i, 2] <- stats::sd(paramdata, na.rm = T)
      out.dataframe[i, 3] <- length(stats::na.omit(paramdata))
-     out.dataframe[i, 4] <- requesttime
+     out.dataframe[i, 4] <- as.character(requesttime)
      out.dataframe[i, 5] <- xmin
      out.dataframe[i, 6] <- xmax
      out.dataframe[i, 7] <- ymin
      out.dataframe[i, 8] <- ymax
      out.dataframe[i, 9] <- tpos[i]
-     out.dataframe[i, 10] <- stats::median(paramdata, na.rm=T)
-     out.dataframe[i, 11] <- stats::mad(paramdata, na.rm=T)
+     out.dataframe[i, 10] <- stats::median(paramdata, na.rm = T)
+     out.dataframe[i, 11] <- stats::mad(paramdata, na.rm = T)
 
      # clean thing up
      # remove temporary file
@@ -226,6 +246,11 @@ for (i in 1:length(xpos1)) {
    oldDataFrame <- out.dataframe[i,]
 
 }
+varname <- dataStruct$varname
+names(out.dataframe)[1] <- paste0('mean ', varname)
+names(out.dataframe)[2] <- paste0('stdev ', varname)
+names(out.dataframe)[10] <- paste0('median ', varname)
+names(out.dataframe)[11] <- paste0('mad ', varname)
 return(out.dataframe)
 }
 

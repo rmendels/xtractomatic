@@ -22,8 +22,8 @@
 #'   \item extract$time - the times of the extracts
 #'   }
 #' @examples
-#' xpos <- c(-130., -115.)
-#' ypos <- c(30., 40.)
+#' xpos <- c(-130., -125.)
+#' ypos <- c(30., 35.)
 #' tpos <- c('2015-01-16', '2015-02-16')
 #' extract <- xtracto_3D('mhsstdmday', xpos, ypos, tpos = tpos)
 #' \donttest{

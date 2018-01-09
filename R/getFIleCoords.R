@@ -22,7 +22,8 @@ getfileCoords <- function(dataStruct, urlbase='https://coastwatch.pfeg.noaa.gov/
   isotime <- NA
   udtime <- NA
   if (hasTime) {
-    myURL <- paste(urlbase,dataStruct$datasetname, '.csvp?time[0:1:last]', sep = "")
+    myURL <- paste(urlbase,dataStruct$datasetname,
+                   '.csvp?time[0:1:last]', sep = "")
     numtries <- 5
     tryn <- 0
     goodtry <- -1
@@ -43,7 +44,8 @@ getfileCoords <- function(dataStruct, urlbase='https://coastwatch.pfeg.noaa.gov/
 
   altitude <- NA
   if (hasAltitude) {
-    myURL <- paste(urlbase, dataStruct$datasetname, '.csvp?altitude[0:1:last]', sep = "")
+    myURL <- paste(urlbase, dataStruct$datasetname,
+                   '.csvp?altitude[0:1:last]', sep = "")
     tryn <- 0
     goodtry <- -1
     options(warn = 2)
@@ -60,7 +62,8 @@ getfileCoords <- function(dataStruct, urlbase='https://coastwatch.pfeg.noaa.gov/
   }
 
   latitude <- NA
-  myURL <- paste(urlbase, dataStruct$datasetname, '.csvp?latitude[0:1:last]', sep = "")
+  myURL <- paste(urlbase, dataStruct$datasetname,
+                 '.csvp?latitude[0:1:last]', sep = "")
   tryn <- 0
   goodtry <- -1
   options(warn = 2)
@@ -76,7 +79,8 @@ getfileCoords <- function(dataStruct, urlbase='https://coastwatch.pfeg.noaa.gov/
   }
 
   longitude <- NA
-  myURL <- paste(urlbase, dataStruct$datasetname, '.csvp?longitude[0:1:last]', sep = "")
+  myURL <- paste(urlbase, dataStruct$datasetname,
+                 '.csvp?longitude[0:1:last]', sep = "")
   tryn <- 0
   goodtry <- -1
   options(warn = 2)
@@ -92,6 +96,8 @@ getfileCoords <- function(dataStruct, urlbase='https://coastwatch.pfeg.noaa.gov/
   }
 
 
-  returnlist <- list("isotime" = isotime, "udtime" = udtime, "altitude" = altitude, "latitude" = latitude, "longitude" = longitude)
+  returnlist <- list("isotime" = isotime, "udtime" = udtime,
+                     "altitude" = altitude, "latitude" = latitude,
+                     "longitude" = longitude)
 
 }

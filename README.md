@@ -1,7 +1,7 @@
 # xtractomatic
 xtractomatic R package for accessing environmental data
 
-***Version 3.4.0 ****
+***Version 3.4.1 ****
 - Changes to the order of the function arguments and required and option arguments in the functions.
 
 

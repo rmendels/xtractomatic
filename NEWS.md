@@ -1,3 +1,7 @@
+# xtractomatic 3.4.1
+Changed so URL sends ISO time,  not udunits time.
+
+
 # xtractomatic 3.4.0
 
 - Major refactoring of code,  order of function arguments and defaults has changed.

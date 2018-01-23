@@ -177,7 +177,7 @@ for (i in 1:length(xpos1)) {
    } else {
      erddapLats <- rep(NA_real_, 2)
      erddapLons <- rep(NA_real_, 2)
-     erddapTimes <- rep(NA_real_, 2)
+     erddapTimes <- rep(NA, 2)
      erddapLats[1] <- latitude[newLatIndex[1]]
      erddapLats[2] <- latitude[newLatIndex[2]]
      erddapLons[1] <- longitude[newLonIndex[1]]
@@ -185,8 +185,10 @@ for (i in 1:length(xpos1)) {
      erddapTimes <- c(NA, NA)
      requesttime <- isotime[newTimeIndex[1]]
      if (!is.na(tpos[1])) {
-       erddapTimes[1] <- requesttime
-       erddapTimes[2] <- requesttime
+
+       erddapTimes[1] <- as.character(requesttime)
+       erddapTimes[2] <- as.character(requesttime)
+       erddapTimes <- as.Date(erddapTimes, origin = '1970-01-01', tz = "GMT")
      }
 
      myURL <- buildURL(dataStruct, erddapLons, erddapLats, erddapTimes)

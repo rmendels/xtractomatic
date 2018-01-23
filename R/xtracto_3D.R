@@ -138,14 +138,16 @@ if (dataStruct$latSouth) {
 #map request limits to nearest ERDDAP coordinates
 erddapLats <- rep(NA_real_, 2)
 erddapLons <- rep(NA_real_, 2)
-erddapTimes <- rep(NA_real_, 2)
+erddapTimes <- rep(NA, 2)
+#tempTimes <- (rep(NA, 2))
 erddapLats[1] <- latitude[which.min(abs(latitude - latBounds[1]))]
 erddapLats[2] <- latitude[which.min(abs(latitude - latBounds[2]))]
 erddapLons[1] <- longitude[which.min(abs(longitude - lonBounds[1]))]
 erddapLons[2] <- longitude[which.min(abs(longitude - lonBounds[2]))]
 if (hasTime) {
-  erddapTimes[1] <- isotime[which.min(abs(udtime - tposLim[1]))]
-  erddapTimes[2] <- isotime[which.min(abs(udtime - tposLim[2]))]
+  erddapTimes[1] <- as.character(isotime[which.min(abs(udtime - tposLim[1]))])
+  erddapTimes[2] <- as.character(isotime[which.min(abs(udtime - tposLim[2]))])
+  erddapTimes <- as.Date(erddapTimes, origin = '1970-01-01', tz = "GMT")
 }
 
 myURL <- buildURL(dataStruct, erddapLons, erddapLats, erddapTimes)

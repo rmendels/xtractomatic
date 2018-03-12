@@ -152,7 +152,9 @@ if (hasTime) {
 
 myURL <- buildURL(dataStruct, erddapLons, erddapLats, erddapTimes)
 #Download the data from the website to the current R directory
-fileout <- "tmpExtract.nc"
+#fileout <- "tmpExtract.nc"
+ncDir <- tempdir()
+fileout <- tempfile('tempData', tmpdir = ncDir, fileext = '.nc')
 downloadReturn <- getErddapURL(myURL, fileout, verbose)
 if (downloadReturn != 0) {
    print(myURL)

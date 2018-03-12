@@ -145,7 +145,8 @@ newLatIndex <-  rep(NA_integer_, 2)
 newTimeIndex <-  rep(NA_integer_, 2)
 oldDataFrame <- as.data.frame(matrix(ncol = 11,nrow = 1))
 
-
+ncDir <- tempdir()
+fileout <- tempfile('tempData', tmpdir = ncDir, fileext = '.nc')
 for (i in 1:length(xpos1)) {
 
 # define bounding box
@@ -193,7 +194,7 @@ for (i in 1:length(xpos1)) {
 
      myURL <- buildURL(dataStruct, erddapLons, erddapLats, erddapTimes)
      #Download the data from the website to the current R directory
-     fileout <- "tempExtract.nc"
+     # fileout <- "tempExtract.nc"
      downloadReturn <- getErddapURL(myURL, fileout, verbose)
      if (downloadReturn != 0) {
        print(myURL)

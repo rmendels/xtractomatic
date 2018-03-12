@@ -1,3 +1,6 @@
+# xtractomatic 3.4.2
+Proper handling of temporary files
+
 # xtractomatic 3.4.1
 Changed so URL sends ISO time,  not udunits time.
 

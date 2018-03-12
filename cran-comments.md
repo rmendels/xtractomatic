@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.4.0
+* local OS X install, R 3.4.3
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -7,6 +7,9 @@ There were no ERRORs or WARNINGs on OS X using devtools::check()
 
 
 There was 1 NOTE from win-builder-release:
+
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Roy Mendelssohn <roy.mendelssohn@noaa.gov>'
 
 Possibly mis-spelled words in DESCRIPTION:
   ERD's (3:42, 9:29)
@@ -21,7 +24,7 @@ There were 0 NOTEs from win-builder-devel:
 
 ## Comments
 
-This release should fix the problems in the present CRAN builds.
+This release properly handles temporary files following guidelines.
 
 As requested from the previous release,  the vignette now will make mutiple attempts to retrieve the data.
 

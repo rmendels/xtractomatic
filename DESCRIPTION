@@ -1,5 +1,5 @@
 Package: xtractomatic
-Version: 3.4.2
+Version: 3.4.3
 Title: Accessing Environmental Data from ERD's ERDDAP Server
 Authors@R: c(
     person("Roy", "Mendelssohn", email = "roy.mendelssohn@noaa.gov", role = c("aut","cre")),
